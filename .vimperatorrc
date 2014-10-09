@@ -1,0 +1,9 @@
+" Normal Mode Mappings
+nnoremap <C-f> /
+inoremap <C-a> <Ins><C-a><Ins>
+
+noremap <C-c> <C-v><C-c>
+"inoremap <C-c> <C-v><C-c>
+cnoremap <C-c> <C-v><C-c>
+
+set hintchars=asdfhjkl
