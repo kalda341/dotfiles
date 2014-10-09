@@ -1,1 +1,1 @@
-/home/max/.zprezto/runcoms/zprofile
+.zprezto/runcoms/zprofile
