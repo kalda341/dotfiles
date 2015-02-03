@@ -7,10 +7,13 @@
 #
 ## set it in order to make tag editor and renaming files work properly
 #
-mpd_host = "localhost"
+mpd_host = "runeaudio.lan"
 #
 mpd_port = "6600"
 #
-mpd_music_dir = "~/music"
+mpd_music_dir = "/nas/Music"
 #
 #mpd_connection_timeout = "5"
+
+#Makes it easier for i3 to identify window
+enable_window_title = no

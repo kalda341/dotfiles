@@ -11,6 +11,12 @@
 
 set $mod Mod4
 
+#gaps-next features
+gaps inner 20
+gaps outer -8
+
+#smart_borders on
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -27,14 +33,20 @@ font pango:DejaVu Sans Mono 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec urxvt
 
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+## Show the sup-mail scratchpad window, if any.
+#bindsym mod4+s [title="^Sup ::"] scratchpad show
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec synapse
+bindsym $mod+d exec j4-dmenu-desktop
+#bindsym $mod+d exec synapse
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -112,24 +124,24 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+# These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
+# Pressing left will shrink the window’s width.
+# Pressing right will grow the window’s width.
+# Pressing up will shrink the window’s height.
+# Pressing down will grow the window’s height.
+    bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
+# same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
+# back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
@@ -162,14 +174,42 @@ for_window [class="Skype"] floating enable
 for_window [title="Copying"] floating enable
 for_window [title="Deleting"] floating enable
 for_window [title="Moving"] floating enable
-#for_window [class="Vamix"] floating enable
 
+#In case the other monitor is plugged in
+exec ~/.screenlayout/two.sh
+
+#Desktop bacrground
 exec --no-startup-id nitrogen --restore
-exec --no-startup-id nm-applet
+
+#Hide mouse when not being used
 exec --no-startup-id unclutter
-exec --no-startup-id xflux -l -36.8484597 -g 174.76333150000005 -r
+
+#Xflux
+#exec --no-startup-id xflux -l -36.8484597 -g 174.76333150000005 -r
+
+#Remap backspace
 exec --no-startup-id ~/scripts/keymap.sh
+
+#Load status bar
 exec --no-startup-id conky -c ~/.i3/conkyconfig
+
+#Clipboard thingy
+exec --no-startup-id ~/scripts/clipd
+bindsym $mod+x exec ~/scripts/clipd menu
+
+#Music player in scratchpad
+exec urxvt -e ncmpcpp
+for_window [title="ncmpcpp"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
+bindsym $mod+c [title="ncmpcpp"] scratchpad show
+
+exec --no-startup-id i3-msg 'workspace browser; exec firefox; workspace browser'
+#exec --no-startup-id i3-msg 'workspace skype; exec skype; workspace browser'
+
+#Scratchpad terminal
+exec --no-startup-id tmux new scratchpad
+exec urxvt -title scratchpad-terminal
+for_window [title="scratchpad-terminal"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
+bindsym $mod+z [title="scratchpad-terminal"] scratchpad show
 
 bindsym $mod+t exec ~/.i3/get_workspace_options.py | dmenu | ~/.i3/go_to_workspace.py
 bindsym $mod+Shift+t exec ~/.i3/get_workspace_options.py | dmenu  | ~/.i3/move_to_workspace.py
@@ -182,7 +222,30 @@ bindsym $mod+Down exec $control down go
 # move workspace between outputs
 bindsym $mod+y move workspace to output left
 
-bindsym $mod+m exec ~/.screenlayout/two.sh & nitrogen --restore
-bindsym $mod+shift+m exec ~/.screenlayout/one.sh & nitrogen --restore
+bindsym $mod+m exec ~/.screenlayout/two.sh && nitrogen --restore
+bindsym $mod+shift+m exec ~/.screenlayout/one.sh && nitrogen --restore
+
+#Marks (NAME)
+bindsym $mod+Shift+n exec i3-input -F 'mark %s' -P 'Mark name: '
+bindsym $mod+N exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
+
+#lock
+bindsym F9 exec i3-msg workspace none && i3lock -c 111111 -d
+
+#mpc
+set $MPCHOST "runeaudio.lan"
+bindsym F5 exec mpc --host $MPCHOST play
+bindsym F6 exec mpc --host $MPCHOST pause
+bindsym F7 exec mpc --host $MPCHOST prev
+bindsym F8 exec mpc --host $MPCHOST next
+#bindsym F10 exec mpc --host $MPCHOST volume 0
+bindsym F11 exec mpc --host $MPCHOST volume -5
+bindsym F12 exec mpc --host $MPCHOST volume +5
+
+#Thinkpad keys
+# pulse audio volume control
+bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume 0 -- '-5%'
+bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume 0 -- '+5%'
+bindsym XF86AudioMute exec /usr/bin/pactl set-sink-volume 0 0
 
 bindsym $mod+p exec dolphin

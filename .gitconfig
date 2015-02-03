@@ -13,5 +13,7 @@
 	prompt = false
 [alias]
 	d = difftool
+    co = checkout
+    b = branch
 [core]
 	editor = vim

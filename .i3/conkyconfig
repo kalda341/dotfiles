@@ -18,7 +18,7 @@ draw_shades no
 #gap_y 50 does this do anything?
 alignment top_left
 #behaviour
-update_interval 1
+update_interval 0.5
 update_interval_on_battery 1
 #colour
 default_color white
@@ -32,6 +32,8 @@ xftfont DejaVu Sans Mono:size=10
 override_utf8_locale yes
 #to prevent window from moving
 use_spacer right
+mpd_host runeaudio.lan
+mpd_port 6600
 #maximum_width 1366
 default_graph_size 10 100
 format_human_readable yes
@@ -41,10 +43,8 @@ color1 FFAA00
 color2 gray
 TEXT
 ${execp ~/.i3/geti3workspaces.sh}\
-${if_mpd_playing}$color1${alignr}${mpd_title}${endif}\
-$color1${alignr}${execi 5 python2 ~/.i3/conky-clementine/anowplaying.py -t}$color-\
-${if_mpd_playing}$color1${alignr}${mpd_artist}${endif}\
-$color1${alignr}${execi 5 python2 ~/.i3/conky-clementine/anowplaying.py -a} \
+${if_mpd_playing}$color1${alignr}${mpd_title}-${endif}\
+${if_mpd_playing}$color1${alignr}${mpd_artist} ${endif}\
 ${color0}${alignr}CPU:${cpugraph cpu0 10,100 AA5500 AA8800 -t -l}${color0}$cpu%${goto 280} \
 ${alignr}DISK:${execi 20 df -l | awk '/\/dev\/sda6/ {print $5}'}${diskiograph_read /dev/sda 10,100 663300 996633 -t -l}↑${diskio_read /dev/sda}\
 ${diskiograph_write /dev/sda 10,100 663300 996633 -t -l}↓${diskio_write} \

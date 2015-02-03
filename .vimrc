@@ -34,18 +34,26 @@ endif
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-Bundle 'gmarik/vundle'
-Bundle 'mattn/webapi-vim'
-Bundle 'mattn/gist-vim'
-Bundle 'morhetz/gruvbox'
-Bundle 'Raimondi/delimitMate'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'ervandew/supertab'
-Bundle 'szw/vim-ctrlspace' 
-Bundle 'tpope/vim-surround' 
+Plugin 'gmarik/vundle'
+Plugin 'mattn/webapi-vim'
+Plugin 'mattn/gist-vim'
+Plugin 'morhetz/gruvbox'
+Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
+Bundle 'Valloric/YouCompleteMe'
+Plugin 'ctrlp.vim'
+Plugin 'tpope/vim-surround' 
 Plugin 'tpope/vim-fugitive'
 Plugin 'camelcasemotion'
+Plugin 'quickfixsigns'
+Plugin 'repeat-motion'
+Plugin 'argtextobj.vim'
+Plugin 'lervag/vim-latex'
+Plugin 'TaskList.vim'
+Plugin 'Syntastic'
+Plugin 'EasyMotion'
+Plugin 'christoomey/vim-tmux-navigator'
 
 let vundle_bundles = expand("~/.vim/bundles.vim")
 if filereadable(vundle_bundles)
@@ -104,8 +112,9 @@ nmap <Leader>Scc :set nocuc<CR>
 set showtabline=1
 
 " Folds
-"set foldmethod=indent
-"set foldcolumn=1
+set foldmethod=indent
+set foldcolumn=1
+set foldlevel=99
 
 set scrolloff=5                 " Start scrolling n lines before border
 
@@ -137,6 +146,8 @@ if has('gui_running')
     nnoremap <Leader>gt :if &go=~#'T'<Bar>set go-=T<Bar>else<Bar>set go+=T<Bar>endif<CR>
     inoremap <C-Space> <C-x><C-o>
 else
+    "Disable mouse in terminal
+    "set mouse=
     set t_Co=256
     colorscheme gruvbox
     if &term == 'linux'
@@ -204,6 +215,13 @@ noremap <Leader>Q :cclose<CR>
 " Syntastic
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_check_on_open=1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " FileType
 let python_highlight_all = 1
@@ -250,7 +268,7 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-let g:SuperTabDefaultCompletionType = 'context' "Let SuperTab use other completion for classes and objects
+"let g:SuperTabDefaultCompletionType = 'context' "Let SuperTab use other completion for classes and objects
 
 "Search and replace word under curser with F4
 nnoremap <F4> :%s/<c-r><c-w>//g<c-f>$F/i
@@ -275,7 +293,6 @@ map <C-l> <C-w>l
 " F5 to recursively search directory
 map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 
-let g:SuperTabContextDefaultCompletionType = "<c-p>"
 "Case insensitive filename completion
 set wildignorecase
 
@@ -288,6 +305,7 @@ map <C-j><C-m> :JavaMove<Space>
 map <C-j><C-f> :JavaSearch<Return>
 map <C-j><C-h> :JavaCorrect<Return>
 map <C-j><C-p> :ProjectProblems<Return>
+map <C-j><C-d> :JavaDocPreview<Return>
 
 map <S-W> <Plug>CamelCaseMotion_w
 map <S-B> <Plug>CamelCaseMotion_b
@@ -305,4 +323,36 @@ hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
 hi CtrlSpaceSearch   ctermfg=220  ctermbg=NONE cterm=bold
 hi CtrlSpaceStatus   ctermfg=230  ctermbg=234  cterm=NONE
 
-let  g:ctrlspace_default_mapping_key = '<C-p>'
+"%% is directory containing current file
+cabbr <expr> %% expand('%:p:h')
+
+"Indent entire document
+map <C-i> mzgg=G'z
+
+"Ultisnips
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-@>"
+let g:UltiSnipsJumpForwardTrigger="<c-@>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+"let repmo_key="<Space>"
+"let repmo_revkey=" "
+
+nnoremap <Space> :
+
+map <leader>td <Plug>TaskList
+
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_log_level = 'debug'
+
+"Hopefully fixes terminal draw bug in Tmux
+:set t_ut=
