@@ -1,3 +1,5 @@
+unset GREP_OPTIONS
+
 ZSHA_BASE=$HOME/.zsh-antigen
 source $ZSHA_BASE/antigen/antigen.zsh
  
