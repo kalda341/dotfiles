@@ -5,7 +5,7 @@
     ~/.tmux.conf: tmux.conf
     ~/.tmux: tmux/
     ~/.i3: i3/
-    ~/.zprezto: zprezto/
+    ~/.zshrc: zshrc
     ~/.bashrc: bashrc
     ~/.gitconfig: gitconfig
     ~/.vimperatorrc: vimperatorrc
@@ -15,6 +15,7 @@
     ~/.config/luakit: luakit
     ~/.config/ranger: ranger
     ~/.vimperatorrc: vimperatorrc
+    ~/.zsh-antigen: zsh-antigen
 
 - shell:
     - ln -s ~/.zprezto/runcoms/zpreztorc ~/.zpreztorc
