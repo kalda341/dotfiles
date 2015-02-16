@@ -1,0 +1,15 @@
+directory: /nas/Music
+library: /nas/MusicLibrary.blb
+
+import:
+    move: yes
+    incremental: yes
+
+match:
+    strong_rec_thresh: 0.15
+
+#plugins: inline discogs mpdupdate fetchart
+
+mpd:
+    host: runeaudio.lan
+    port: 6600

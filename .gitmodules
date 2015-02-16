@@ -1,9 +1,3 @@
-[submodule "tmux-config"]
-	path = .tmux
-	url = https://github.com/tony/tmux-config.git
-[submodule ".zprezto"]
-	path = .zprezto
-	url = git@github.com:kalda341/.zpresto.git
-[submodule ".i3/conky-clementine"]
-	path = .i3/conky-clementine
-	url = https://github.com/diadara/conky-clementine.git
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot

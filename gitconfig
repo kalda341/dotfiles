@@ -1,0 +1,19 @@
+[user]
+	email = kalda341@gmail.com
+	name = Max Lay
+[push]
+	default = simple
+[merge]
+	tool = vimdiff
+[github]
+	user = kalda341
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	d = difftool
+	co = checkout
+	b = branch
+[core]
+	editor = vim
