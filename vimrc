@@ -26,14 +26,18 @@ Plugin 'gmarik/vundle'
 
 "Git plugins
 Plugin 'mattn/gist-vim'
+Plugin 'mattn/webapi-vim'
 Plugin 'tpope/vim-fugitive'
+
+"Erlang
+Plugin 'jimenezrick/vimerl'
 
 "Plugin 'mattn/webapi-vim'
 Plugin 'morhetz/gruvbox'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'ctrlp.vim'
 Plugin 'tpope/vim-surround' 
 "Autocomplete ends of blocks (like if)

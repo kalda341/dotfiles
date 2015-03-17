@@ -16,6 +16,7 @@ antigen bundle command-not-found
 antigen bundle history
 antigen bundle vundle
 antigen bundle tmux
+antigen bundle rupa/z
 
 antigen theme agnoster
  

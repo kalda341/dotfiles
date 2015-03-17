@@ -9,6 +9,7 @@
     ~/.bashrc: bashrc
     ~/.gitconfig: gitconfig
     ~/.vimperatorrc: vimperatorrc
+    ~/.ncmpcpp: ncmpcpp
     ~/.Xresources: Xresources
     ~/.config/beets: beets
     ~/.config/dunst: dunst

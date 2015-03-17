@@ -1,5 +1,5 @@
 [global]
-    font = Monospace 8
+    font = Monospace 10
 
     # Allow a small subset of html markup in notifications and formats:
     #   <b>bold</b>
@@ -81,7 +81,7 @@
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
     # for longer than idle_threshold seconds.
     # Set to 0 to disable.
-    idle_threshold = 120
+    idle_threshold = 60
 
     # Which monitor should the notifications be displayed on.
     monitor = 0
@@ -166,15 +166,15 @@
     # Xev might be helpful to find names for keys.
 
     # Close notification.
-    close = ctrl+space
+    close = mod4+o
 
     # Close all notifications.
-    close_all = ctrl+shift+space
+    close_all = mod+shift+o
 
     # Redisplay last message(s).
     # On the US keyboard layout "grave" is normally above TAB and left
     # of "1".
-    history = ctrl+grave
+    history = mod4+grave
 
     # Context menu.
     context = ctrl+shift+period
@@ -189,7 +189,7 @@
 [urgency_normal]
     background = "#285577"
     foreground = "#ffffff"
-    timeout = 10
+    timeout = 30
 
 [urgency_critical]
     background = "#900000"
@@ -249,4 +249,4 @@
 #    summary = *twitter.com*
 #    urgency = normal
 #
-# vim: ft=cfg
+ vim: ft=cfg

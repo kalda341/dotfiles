@@ -15,9 +15,7 @@ search Phar
 search dates
 mkdir 
 mkdir a02
-
 search home
-open_with 
 delete
 search got_to
 search go
@@ -26,8 +24,18 @@ searc
 cd /
 mount .
 sudo mount
-search nas
 search sd
 search Chrome
 q
 search rc
+search 
+search nas
+mkdir autorum
+shell ln -s %s autorun
+cd /home/max/.irssi/scripts
+
+cd .irssi/
+mv %s autorun
+shell mv %s autorun
+search plex
+open_with 

@@ -5,7 +5,7 @@ success = False
 while success == False:
     try:
         client = mpd.MPDClient()
-        client.connect("runeaudio.lan", 6600) 
+        client.connect("runeaudio.lan", 6600)
         success = True
     except:
         time.sleep(5)
