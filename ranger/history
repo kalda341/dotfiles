@@ -1,22 +1,3 @@
-search ma
-l
-split
-tabe
-tab_open 
-tab_open /nas
-tab_new 
-terminal
-search Down
-rename 
-rename
-rename The Pharcyde
-search mu
-search Phar
-search dates
-mkdir 
-mkdir a02
-search home
-delete
 search got_to
 search go
 search g
@@ -28,14 +9,42 @@ search sd
 search Chrome
 q
 search rc
-search 
-search nas
 mkdir autorum
 shell ln -s %s autorun
 cd /home/max/.irssi/scripts
-
 cd .irssi/
 mv %s autorun
 shell mv %s autorun
 search plex
+mkdir Engen204
+mkdir CV
+mkdir SE206
+mkdir SE250
+mkdir Phil105
+mkdir SE251
+mkdir SE350
+mkdir Uni
+
+search docu
+search Music
+search Syd
+search Dru
+search DR
+search 
+search media
+shell 
+find 
+delete
+j
+shell mkdir drums
+search DOwn
+search Down
+filter .pdf
+search nas
+search Klaus
+search mnt
+cd  
+cd  mnt
 open_with 
+cd  Music
+cd  nas

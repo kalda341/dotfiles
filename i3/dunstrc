@@ -67,7 +67,7 @@
     # the top and down respectively.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "300x5-30+20"
+    geometry = "300x5-30+45"
 
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
@@ -104,7 +104,7 @@
     sticky_history = yes
 
     # Maximum amount of notifications kept in history
-    history_length = 20
+    history_length = 100
 
     # Display indicators for URLs (U) and actions (A).
     show_indicators = yes
@@ -169,7 +169,7 @@
     close = mod4+o
 
     # Close all notifications.
-    close_all = mod+shift+o
+    close_all = mod4+shift+o
 
     # Redisplay last message(s).
     # On the US keyboard layout "grave" is normally above TAB and left
@@ -184,12 +184,12 @@
     # Otherwise the "#" and following would be interpreted as a comment.
     background = "#222222"
     foreground = "#888888"
-    timeout = 10
+    timeout = 8
 
 [urgency_normal]
     background = "#285577"
     foreground = "#ffffff"
-    timeout = 30
+    timeout = 12
 
 [urgency_critical]
     background = "#900000"

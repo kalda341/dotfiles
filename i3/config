@@ -23,6 +23,8 @@ font pango: Monospace 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+bindsym $mod+Escape exec xkill
+
 # start a terminal
 bindsym $mod+Return exec urxvt
 
@@ -151,6 +153,9 @@ for_window [title="Copying"] floating enable
 for_window [title="Deleting"] floating enable
 for_window [title="Moving"] floating enable
 
+#Cvim
+exec ~/scripts/cvim_server.py
+
 #In case the other monitor is plugged in
 exec ~/.screenlayout/two.sh
 
@@ -158,7 +163,7 @@ exec ~/.screenlayout/two.sh
 exec --no-startup-id nitrogen --restore
 
 #Hide mouse when not being used
-exec --no-startup-id unclutter
+#exec --no-startup-id unclutter
 
 #Xflux
 exec --no-startup-id xflux -l -36.8484597 -g 174.76333150000005 -r
@@ -185,6 +190,9 @@ bar {
         }
 }
 
+#Weechat startup
+assign [class="URxvt" title="WeeChat*"] chat
+exec urxvt -e ~/scripts/weechat.sh
 #Jump to chat client
 bindsym $mod+g [class="URxvt" title="WeeChat*"] focus
 
@@ -251,4 +259,3 @@ bindsym XF86AudioMute exec /usr/bin/pactl set-sink-volume 0 0 && ~/.i3/notify-vo
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
-

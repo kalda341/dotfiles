@@ -2,6 +2,7 @@ unset GREP_OPTIONS
 
 ZSHA_BASE=$HOME/.zsh-antigen
 source $ZSHA_BASE/antigen/antigen.zsh
+zmodload zsh/zprof
  
 antigen-use oh-my-zsh
 antigen-bundle git
@@ -49,4 +50,14 @@ stty stop undef
 alias mosh="SHELL=/bin/bash mosh"
 alias saltman="mosh root@104.236.4.207"
 
+. ~/Dev/work/Conversant/scram/shellrc.sh
+
+mkdircd = function(){
+    mkdir $1
+    cd $1
+}
+
+alias ack='ACK_PAGER_COLOR="less -x4SRFX" /usr/bin/ack'
+
 archey
+#zprof

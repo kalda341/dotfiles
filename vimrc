@@ -8,6 +8,10 @@ filetype on
 
 let mapleader = "\<Space>"
 
+"Fix scrolling on wrapped lines
+nnoremap j gj
+nnoremap k gk
+
 let bundleinstall = 0
 let bundle = expand('~/.vim/bundle')
 if !isdirectory(bundle)
@@ -37,7 +41,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 Plugin 'ctrlp.vim'
 Plugin 'tpope/vim-surround' 
 "Autocomplete ends of blocks (like if)
@@ -54,14 +58,21 @@ Plugin 'lervag/vim-latex'
 Plugin 'Syntastic'
 Plugin 'EasyMotion'
 Plugin 'christoomey/vim-tmux-navigator'
+
+"Text objects
 Plugin 'kana/vim-textobj-user'
 Plugin 'bps/vim-textobj-python'
-"For argument text object
 Plugin 'b4winckler/vim-angry'
+
 "Ultisnips
-Plugin 'SirVer/ultisnips'
-"Utilisnips Snippets
+Plugin 'SirVer/ultisnips', {'do': 'ln -s ~/.vim/bundle/ultisnips/ftdetect/UltiSnips.vim ~/.vim/ftdetect'}
 Plugin 'honza/vim-snippets'
+
+"The silver searcher
+Plugin 'rking/ag.vim'
+Plugin 'majutsushi/tagbar'
+
+Plugin 'tommcdo/vim-exchange'
 
 let vundle_bundles = expand("~/.vim/bundles.vim")
 if filereadable(vundle_bundles)
@@ -72,26 +83,24 @@ if bundleinstall == 1
     exec "BundleInstall"
 endif
 
-filetype plugin indent on
-
 set history=200
 
 set termencoding=utf-8
 set fileencodings=utf8,cp1251
 set encoding=utf8
 
+filetype plugin indent on
+set autoindent
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+set smarttab
 
-set autoindent
-
+"Reload file if edits happen somewhere else
 set autoread
 
 set mouse=a
-
-"set nowrap                        " NoWrap
 
 set laststatus=2
 
@@ -111,9 +120,6 @@ set list
 set number                      " Show line numbers
 set cc=80                       " Ver line in 80 column
 set cursorline
-" Set cursorcolumn
-nmap <Leader>scc :set cuc<CR>
-nmap <Leader>Scc :set nocuc<CR>
 
 set showtabline=1
 
@@ -128,7 +134,7 @@ set scrolloff=5                 " Start scrolling n lines before border
 set hlsearch                    " Highlight searches
 set incsearch                   " Highlight dynamically as pattern is typed
 set ignorecase                  " Ignore case of searches
-nmap <F12> :nohl<CR>
+nmap <Leader>/ :nohlsearch<CR>
 
 if exists("&undodir")
     set undofile
@@ -167,17 +173,6 @@ endif
 
 "Easy ways of getting into normal mode
 inoremap jj <ESC>
-inoremap jk <ESC>
-
-" Disable help
-inoremap <F1> <ESC>
-nnoremap <F1> <ESC>
-vnoremap <F1> <ESC>
-
-" Open vimrc
-nnoremap <F1> :tabe $MYVIMRC<CR>
-" Source vimrc
-nnoremap <S-F1> :source $MYVIMRC<CR>
 
 " For NERDTree
 nmap <F2> :NERDTreeToggle<CR>
@@ -186,9 +181,11 @@ let NERDTreeIgnore=['\.py[co]$', '\~$']
 " TList
 nmap <F3> :TagbarToggle<CR>
 
-nnoremap <F4> :!ctags -R --exclude=.git<CR>
+"nnoremap <F4> :ctags -R --exclude=.git<CR>
 
-map <F7> mzgg=G`z<CR>
+" Set cursorcolumn
+nmap <Leader>scc :set cuc<CR>
+nmap <Leader>Scc :set nocuc<CR>
 
 noremap <silent> [a :prev<CR>
 noremap <silent> ]a :next<CR>
@@ -204,35 +201,32 @@ noremap <Leader>b :ls<CR>:
 
 noremap <silent> [q :cprev<CR>
 noremap <silent> ]q :cnext<CR>
+noremap <silent> [Q :cfirst<CR>
+noremap <silent> ]Q :clast<CR>
 noremap <Leader>q :copen<CR>
 noremap <Leader>Q :cclose<CR>
 
 " Syntastic
+let g:syntastic_quiet_messages = { "type": "style" }
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_check_on_open=1
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " FileType
 let python_highlight_all = 1
 let g:pyindent_open_paren = '&sw'
-
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-
 autocmd FileType python nnoremap <F5> :w<CR>:!python %<CR>
 " let f=expand("%") | vnew | execute ".!python ".f
 autocmd FileType python setlocal complete-=i
 autocmd FileType python setlocal dictionary=~/.vim/dict/python
 autocmd FileType python setlocal complete+=k
-
 autocmd FileType html,htmldjango setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd BufEnter *html map <F11> :setfiletype htmldjango<CR>
 autocmd BufEnter *html map <S-F11> :setfiletype django<CR>
@@ -254,7 +248,6 @@ EOF
 "Search and replace word under curser with F4
 nnoremap <F4> :%s/<c-r><c-w>//g<c-f>$F/i
 
-" Map s to camel case w
 set completeopt=longest,menuone
 let g:EclimCompletionMethod = 'omnifunc'
 
@@ -273,8 +266,11 @@ map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 "Case insensitive filename completion
 set wildignorecase
 
-map <Leader>o :CtrlP<Return>
+"Vimrc stuff
+nmap <silent> <Leader>ev :tabe $MYVIMRC<CR>
+nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 
+" Java
 map <Leader>ji :JavaImport<Return>
 map <Leader>jg :JavaGet<Return>
 map <Leader>js :JavaSet<Return>
@@ -286,14 +282,22 @@ map <Leader>jh :JavaCorrect<Return>
 map <Leader>jp :ProjectProblems<Return>
 map <Leader>jd :JavaDocPreview<Return>
 
+"Newline
+map <Leader>o o<Esc>
+map <Leader>O O<Esc>
+
 "Copy, paste and cut to system clipboard
 map <Leader>y "+y
 map <Leader>x "+d
-map <Leader>p "+p"
+map <Leader>p :set paste<CR>"+p:set nopaste<CR>
 
 map <S-W> <Plug>CamelCaseMotion_w
 map <S-B> <Plug>CamelCaseMotion_b
 map <S-E> <Plug>CamelCaseMotion_e
+
+"Ctrl p
+map <C-b> :CtrlPBuffer<CR>
+map <Leader>m :CtrlPMRU<CR>
 
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
@@ -302,40 +306,32 @@ let delimitMate_expand_space = 1
 set diffopt+=vertical
 set re=1
 
-hi CtrlSpaceSelected term=reverse ctermfg=187  ctermbg=23  cterm=bold
-hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
-hi CtrlSpaceSearch   ctermfg=220  ctermbg=NONE cterm=bold
-hi CtrlSpaceStatus   ctermfg=230  ctermbg=234  cterm=NONE
-
 "%% is directory containing current file
 cabbr <expr> %% expand('%:p:h')
 
 "Indent entire document
 map <C-i> mzgg=G'z
 
+" YouCompleteMe setup
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 1
 
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-@>"
-let g:UltiSnipsJumpForwardTrigger="<c-@>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"Ultisnips Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-k>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-map <leader>td <Plug>TaskList
-
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_server_log_level = 'debug'
+map <Leader>td <Plug>TaskList
 
 "fixes terminal draw bug in Tmux
 set t_ut=
 
-let g:argumentobject_force_toplevel = 1
-
-
 " Add ranger as a file chooser in vim
 " If you add this code to the .vimrc, ranger can be started using the command
-" ":RangerChooser" or the keybinding "<leader>r". Once you select one or more
+" ":RangerChooser" or the keybinding "<Leader>r". Once you select one or more
 " files, press enter and ranger will quit again and vim will open the selected
 " files.
 function! RangeChooser()
@@ -364,8 +360,21 @@ function! RangeChooser()
     redraw!
 endfunction
 command! -bar RangerChooser call RangeChooser()
-nnoremap <leader>r :<C-U>RangerChooser<CR>
+nnoremap <Leader>r :<C-U>RangerChooser<CR>
+
+nmap <Leader>t :TagbarToggle<CR>
 
 let repmo_key=","
 let repmo_revkey="\\"
 noremap ; "_d
+
+"Disable annoying backup
+set nobackup
+set noswapfile
+nmap <F12> :nohl<CR>
+
+"Sudo write
+cmap w!! w !sudo tee % >/dev/null
+
+""Don't keep all fugative buffers open when not shown
+"autocmd BufReadPost fugitive://* set bufhidden=delete

@@ -71,6 +71,13 @@ urxvt*color14: #8ec07c
 urxvt*color7: #a89984
 urxvt*color15: #ebdbb2
 
+
+!! Font sizes
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
+URxvt.keysym.C-S-Up:   perl:font-size:incglobal
+URxvt.keysym.C-S-Down: perl:font-size:decglobal
+
 !! Transperency
 !urxvt*transparent: true
 !urxvt*shading: 25
