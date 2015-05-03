@@ -17,6 +17,7 @@
     ~/.config/ranger: ranger
     ~/.vimperatorrc: vimperatorrc
     ~/.zsh-antigen: zsh-antigen
+    ~/.synergy.conf: synergy.conf
 
 - shell:
     - ln -s ~/.zprezto/runcoms/zpreztorc ~/.zpreztorc
