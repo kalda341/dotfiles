@@ -51,7 +51,7 @@ Plugin 'tpope/vim-sleuth'
 "Need to find time to configure
 Plugin 'tpope/vim-repeat'
 Plugin 'camelcasemotion'
-"Plugin 'quickfixsigns'
+Plugin 'quickfixsigns'
 Plugin 'repeat-motion'
 Plugin 'lervag/vim-latex'
 "Plugin 'TaskList.vim'
@@ -73,6 +73,9 @@ Plugin 'rking/ag.vim'
 Plugin 'majutsushi/tagbar'
 
 Plugin 'tommcdo/vim-exchange'
+
+"Run tmux commands from vim
+Plugin 'benmills/vimux'
 
 let vundle_bundles = expand("~/.vim/bundles.vim")
 if filereadable(vundle_bundles)
@@ -260,6 +263,10 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+"Alternate scrolling
+map <C-j> 5j
+map <C-k> 5k
+
 " F5 to recursively search directory
 map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 
@@ -310,7 +317,7 @@ set re=1
 cabbr <expr> %% expand('%:p:h')
 
 "Indent entire document
-map <C-i> mzgg=G'z
+map <Leader><C-i> mzgg=G'z
 
 " YouCompleteMe setup
 let g:ycm_autoclose_preview_window_after_completion = 1
