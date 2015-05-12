@@ -222,6 +222,8 @@ bindsym $mod+t exec ~/.i3/get_workspace_options.py | dmenu | ~/.i3/go_to_workspa
 bindsym $mod+Shift+t exec bash -c '~/.i3/get_workspace_options.py | dmenu | tee  >(~/.i3/go_to_workspace.py) >(~/.i3/move_to_workspace.py)'
 bindsym $mod+y exec bash -c '~/.i3/get_workspace_options.py | dmenu | (~/.i3/move_to_workspace.py)'
 
+bindsym $mod+Shift+y move workspace to output left
+
 bindsym $mod+Left exec $control prev go
 bindsym $mod+Right exec $control next go
 bindsym $mod+Up exec $control up go
@@ -241,7 +243,7 @@ bindsym $mod+N exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
 bindsym F9 exec i3-msg workspace none && i3lock -c 111111 -d
 
 #mpc
-set $MPCHOST "runeaudio.lan"
+set $MPCHOST "nas"
 bindsym F5 exec mpc --host $MPCHOST play
 bindsym F6 exec mpc --host $MPCHOST pause
 bindsym F7 exec mpc --host $MPCHOST prev

@@ -51,7 +51,7 @@ cpu_avg_samples 2
 
 default_color FF0000
 
-mpd_host runeaudio.lan
+mpd_host nas
 mpd_port 6600
 
 ## Sensors examples
