@@ -1,18 +1,3 @@
-search got_to
-search go
-search g
-searc
-cd /
-mount .
-sudo mount
-search sd
-search Chrome
-q
-search rc
-mkdir autorum
-shell ln -s %s autorun
-cd /home/max/.irssi/scripts
-cd .irssi/
 mv %s autorun
 shell mv %s autorun
 search plex
@@ -34,7 +19,6 @@ search
 search media
 shell 
 find 
-delete
 j
 shell mkdir drums
 search DOwn
@@ -48,3 +32,19 @@ cd  mnt
 open_with 
 cd  Music
 cd  nas
+search Jurassi
+cd  Nas
+search The Rollin
+search we come
+search marina
+search U.F.
+search Obliv
+search Marina
+mkdir Compilations
+cd Compilations/
+cd Compilations
+delete
+search Various
+search Compil
+mkdir Various
+cd  Various

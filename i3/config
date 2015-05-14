@@ -261,3 +261,5 @@ bindsym XF86AudioMute exec /usr/bin/pactl set-sink-volume 0 0 && ~/.i3/notify-vo
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
+
+synergyc --name Laptop-Manjaro 192.168.1.165
