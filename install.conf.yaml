@@ -18,6 +18,7 @@
     ~/.vimperatorrc: vimperatorrc
     ~/.zsh-antigen: zsh-antigen
     ~/.synergy.conf: synergy.conf
+    ~/.weechat: weechat
 
 - shell:
     - ln -s ~/.zprezto/runcoms/zpreztorc ~/.zpreztorc
