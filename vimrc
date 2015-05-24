@@ -25,57 +25,69 @@ endif
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+if filereadable("~/.vimrc.local")
+    so ~/.vimrc.local
+endif
+
 "Don't remember what commented plugins do
 Plugin 'gmarik/vundle'
-
 "Git plugins
 Plugin 'mattn/gist-vim'
+"Gist
 Plugin 'mattn/webapi-vim'
 Plugin 'tpope/vim-fugitive'
-
 "Erlang
 Plugin 'jimenezrick/vimerl'
-
-"Plugin 'mattn/webapi-vim'
+"Best theme ever
 Plugin 'morhetz/gruvbox'
-Plugin 'Raimondi/delimitMate'
+""Autocompletion of quotes, brackets, etc
+"Plugin 'Raimondi/delimitMate'
+"File browser
 Plugin 'scrooloose/nerdtree'
+"For commenting lines
 Plugin 'scrooloose/nerdcommenter'
+"Autocomplete
 Plugin 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+"Easy file and buffer selection
 Plugin 'ctrlp.vim'
+"For dealing with surrounds
 Plugin 'tpope/vim-surround' 
-"Autocomplete ends of blocks (like if)
-Plugin 'tpope/vim-endwise'
 "Guess indents based on file and containing directory
 Plugin 'tpope/vim-sleuth'
-"Need to find time to configure
+"Need to find time to configure. For . key
 Plugin 'tpope/vim-repeat'
-Plugin 'camelcasemotion'
+""Handy plugin for moving through camel case words
+"Plugin 'camelcasemotion'
+"Show errors, marks, etc in margin
 Plugin 'quickfixsigns'
+"Map , to the last motion
 Plugin 'repeat-motion'
-Plugin 'lervag/vim-latex'
+"Manage TODOs
 "Plugin 'TaskList.vim'
+"Syntax checker
 Plugin 'Syntastic'
+"For easily moving through a file
 Plugin 'EasyMotion'
+"Integration with tmux windows
 Plugin 'christoomey/vim-tmux-navigator'
+"The silver searcher
+Plugin 'rking/ag.vim'
+"For working with Ctags
+Plugin 'majutsushi/tagbar'
+"For swapping positions of text objects
+Plugin 'tommcdo/vim-exchange'
+"Run tmux commands from vim
+Plugin 'benmills/vimux'
 
-"Text objects
+""Text objects
 Plugin 'kana/vim-textobj-user'
 Plugin 'bps/vim-textobj-python'
 Plugin 'b4winckler/vim-angry'
 
 "Ultisnips
-Plugin 'SirVer/ultisnips', {'do': 'ln -s ~/.vim/bundle/ultisnips/ftdetect/UltiSnips.vim ~/.vim/ftdetect'}
+Plugin 'SirVer/ultisnips', {'do': 'mkdir ~/.vim/ftdetect && ln -s ~/.vim/bundle/ultisnips/ftdetect/UltiSnips.vim ~/.vim/ftdetect'}
 Plugin 'honza/vim-snippets'
 
-"The silver searcher
-Plugin 'rking/ag.vim'
-Plugin 'majutsushi/tagbar'
-
-Plugin 'tommcdo/vim-exchange'
-
-"Run tmux commands from vim
-Plugin 'benmills/vimux'
 
 let vundle_bundles = expand("~/.vim/bundles.vim")
 if filereadable(vundle_bundles)
@@ -176,6 +188,7 @@ endif
 
 "Easy ways of getting into normal mode
 inoremap jj <ESC>
+inoremap kk <ESC>
 
 " For NERDTree
 nmap <F2> :NERDTreeToggle<CR>
@@ -190,24 +203,36 @@ nmap <F3> :TagbarToggle<CR>
 nmap <Leader>scc :set cuc<CR>
 nmap <Leader>Scc :set nocuc<CR>
 
-noremap <silent> [a :prev<CR>
-noremap <silent> ]a :next<CR>
-noremap <silent> [A :first<CR>
-noremap <silent> ]A :last<CR>
-noremap <Leader>a :args<CR>
+"Buffers
+noremap <silent><Leader>bp :bprevious<CR>
+noremap <silent><Leader>bn :bnext<CR>
+noremap <silent><Leader>bc :bd<CR>
 
-noremap <silent> [b :bprevious<CR>
-noremap <silent> ]b :bnext<CR>
-noremap <silent> [B :bfirst<CR>
-noremap <silent> ]B :blast<CR>
-noremap <Leader>b :ls<CR>:
+"Tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
 
-noremap <silent> [q :cprev<CR>
-noremap <silent> ]q :cnext<CR>
-noremap <silent> [Q :cfirst<CR>
-noremap <silent> ]Q :clast<CR>
+"Changlist
+noremap <silent><Leader>cp :cprev<CR>
+noremap <silent><Leader>cn :cnext<CR>
+
+"Quickfix
 noremap <Leader>q :copen<CR>
 noremap <Leader>Q :cclose<CR>
+
+"Spelling
+" Pressing ,ss will toggle and untoggle spell checking
+setlocal spell spelllang=en_gb
+setlocal nospell
+map <leader>ss :setlocal spell!<cr>
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
 
 " Syntastic
 let g:syntastic_quiet_messages = { "type": "style" }
@@ -233,6 +258,8 @@ autocmd FileType python setlocal complete+=k
 autocmd FileType html,htmldjango setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd BufEnter *html map <F11> :setfiletype htmldjango<CR>
 autocmd BufEnter *html map <S-F11> :setfiletype django<CR>
+"Remove trailing whitespace upon saving python file
+autocmd BufWritePre *.py :%s/\s\+$//e
 
 " Add the virtualenv's site-packages to vim path
 py << EOF
@@ -264,8 +291,10 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 "Alternate scrolling
-map <C-j> 5j
-map <C-k> 5k
+map j 5j
+map k 5k
+map h 5h
+map l 5l
 
 " F5 to recursively search directory
 map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
@@ -297,6 +326,7 @@ map <Leader>O O<Esc>
 map <Leader>y "+y
 map <Leader>x "+d
 map <Leader>p :set paste<CR>"+p:set nopaste<CR>
+map <Leader>P :set paste<CR>"+P:set nopaste<CR>
 
 map <S-W> <Plug>CamelCaseMotion_w
 map <S-B> <Plug>CamelCaseMotion_b
@@ -304,7 +334,7 @@ map <S-E> <Plug>CamelCaseMotion_e
 
 "Ctrl p
 map <C-b> :CtrlPBuffer<CR>
-map <Leader>m :CtrlPMRU<CR>
+map <C-m> :CtrlPMRU<CR>
 
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
@@ -327,7 +357,6 @@ let g:ycm_min_num_of_chars_for_completion = 1
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>"
 let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
@@ -336,44 +365,11 @@ map <Leader>td <Plug>TaskList
 "fixes terminal draw bug in Tmux
 set t_ut=
 
-" Add ranger as a file chooser in vim
-" If you add this code to the .vimrc, ranger can be started using the command
-" ":RangerChooser" or the keybinding "<Leader>r". Once you select one or more
-" files, press enter and ranger will quit again and vim will open the selected
-" files.
-function! RangeChooser()
-    let temp = tempname()
-    " The option "--choosefiles" was added in ranger 1.5.1. Use the next line
-    " with ranger 1.4.2 through 1.5.0 instead.
-    "exec 'silent !ranger --choosefile=' . shellescape(temp)
-    exec 'silent !ranger --choosefiles=' . shellescape(temp)
-    if !filereadable(temp)
-        redraw!
-        " Nothing to read.
-        return
-    endif
-    let names = readfile(temp)
-    if empty(names)
-        redraw!
-        " Nothing to open.
-        return
-    endif
-    " Edit the first item.
-    exec 'edit ' . fnameescape(names[0])
-    " Add any remaning items to the arg list/buffer list.
-    for name in names[1:]
-        exec 'argadd ' . fnameescape(name)
-    endfor
-    redraw!
-endfunction
-command! -bar RangerChooser call RangeChooser()
-nnoremap <Leader>r :<C-U>RangerChooser<CR>
-
 nmap <Leader>t :TagbarToggle<CR>
 
+"Repeat motion
 let repmo_key=","
 let repmo_revkey="\\"
-noremap ; "_d
 
 "Disable annoying backup
 set nobackup
@@ -385,3 +381,15 @@ cmap w!! w !sudo tee % >/dev/null
 
 ""Don't keep all fugative buffers open when not shown
 "autocmd BufReadPost fugitive://* set bufhidden=delete
+
+"Scroll wrapped lines normally
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+
+"Use ; as :
+nnoremap ; :
+
+" Fast saving
+nmap <Leader>w :w!<cr>
+" Switch CWD to the directory of the open buffer
+map <Leader>cd :cd %:p:h<cr>:pwd<cr>
