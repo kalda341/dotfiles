@@ -6,11 +6,10 @@ syntax on
 set nocompatible
 filetype on
 
+"Easy ways of getting into normal mode
+inoremap jj <ESC>
+inoremap kk <ESC>
 let mapleader = "\<Space>"
-
-"Fix scrolling on wrapped lines
-nnoremap j gj
-nnoremap k gk
 
 let bundleinstall = 0
 let bundle = expand('~/.vim/bundle')
@@ -21,15 +20,14 @@ if !isdirectory(bundle)
     echo "Vundle is now installed!"
     let bundleinstall = 1
 endif
-
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+"Use local config if available
 if filereadable("~/.vimrc.local")
     so ~/.vimrc.local
 endif
 
-"Don't remember what commented plugins do
 Plugin 'gmarik/vundle'
 "Git plugins
 Plugin 'mattn/gist-vim'
@@ -100,106 +98,107 @@ endif
 
 set history=200
 
+"Terminal setup
 set termencoding=utf-8
 set fileencodings=utf8,cp1251
 set encoding=utf8
-
-filetype plugin indent on
-set autoindent
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-set smarttab
-
-"Reload file if edits happen somewhere else
-set autoread
-
-set mouse=a
-
-set laststatus=2
-
-set ruler
-set showcmd
-set ch=1
-
-set wildmenu                    " Cool cmd completion
-set wildignore+=.hg,.git,.svn   " Version control
-set wildignore+=*.pyc           " Python byte code
-set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
-set wildignore+=*.class,*.o
-
-set listchars=tab:>.,trail:.
-set list
-
-set number                      " Show line numbers
-set cc=80                       " Ver line in 80 column
-set cursorline
-
-set showtabline=1
-
-" Folds
-set foldmethod=indent
-set foldcolumn=1
-set foldlevel=99
-
-set scrolloff=5                 " Start scrolling n lines before border
-
-" Search
-set hlsearch                    " Highlight searches
-set incsearch                   " Highlight dynamically as pattern is typed
-set ignorecase                  " Ignore case of searches
-nmap <Leader>/ :nohlsearch<CR>
-
-if exists("&undodir")
-    set undofile
-    set undodir=/tmp
-endif
-set noswapfile
-
-set background=dark
-
-" GVim
-if has('gui_running')
-    colorscheme gruvbox
-    set guioptions-=e
-    set guioptions-=T
-    set guioptions-=m
-    set guioptions-=L
-    set guioptions-=l
-    set guioptions-=R
-    set guioptions-=r
-    nnoremap <Leader>gm :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
-    nnoremap <Leader>gt :if &go=~#'T'<Bar>set go-=T<Bar>else<Bar>set go+=T<Bar>endif<CR>
-    inoremap <C-Space> <C-x><C-o>
-else
-    set t_Co=256
-    colorscheme gruvbox
-    inoremap <Nul> <C-x><C-o>
-    let NERDTreeDirArrows=0
-    let NERDTreeShowHidden=1
-endif
-
-" Beeps off
+"fixes terminal draw bug in Tmux
+set t_ut=
+"Beeps off, not that I ever use a terminal that does
 set noerrorbells visualbell t_vb=
 if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-"Easy ways of getting into normal mode
-inoremap jj <ESC>
-inoremap kk <ESC>
 
-" For NERDTree
+"Indentation and tabs
+set autoindent
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set smarttab
+"Indent entire document
+map <Leader><C-i> mzgg=G'z
+
+"Reload file if edits happen somewhere else
+set autoread
+
+"Uncomment for mouse support
+"set mouse=a
+
+"Statusline stuff
+"Display status line always
+set laststatus=2
+set ruler
+set showcmd
+set ch=1
+
+"Ignore some file types
+set wildmenu                    " Cool cmd completion
+set wildignorecase
+"%% is directory containing current file
+cabbr <expr> %% expand('%:p:h')
+set wildignore+=.hg,.git,.svn   " Version control
+set wildignore+=*.pyc           " Python byte code
+set wildignore+=*.beam           " Erlang byte code
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
+set wildignore+=*.class,*.o
+
+"Display whitespace
+set listchars=tab:>.,trail:.
+set list
+
+"Line numbers and limits
+set number                      " Show line numbers
+set cc=80                       " Ver line in 80 column
+set cursorline
+
+"Folds
+set foldmethod=indent
+set foldcolumn=1
+set foldlevel=99
+
+"Scrolling
+set scrolloff=5                 " Start scrolling n lines before border
+"Scroll wrapped lines normally
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+"Alternate scrolling
+map j 5j
+map k 5k
+map h 5h
+map l 5l
+
+"Search
+set hlsearch                    " Highlight searches
+set incsearch                   " Highlight dynamically as pattern is typed
+set ignorecase                  " Ignore case of searches
+nmap <Leader>/ :nohlsearch<CR>
+
+"Allows undo after file is closed
+if exists("&undodir")
+    set undofile
+    set undodir=/tmp
+endif
+"Swap files and backup are super annoying. I save often
+set noswapfile
+set nobackup
+
+"Theme
+set background=dark
+set t_Co=256
+colorscheme gruvbox
+
+"Nerdtree file browser
+let NERDTreeDirArrows=0
+let NERDTreeShowHidden=1
 nmap <F2> :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.py[co]$', '\~$']
 
-" TList
-nmap <F3> :TagbarToggle<CR>
+"Tagbar
+nmap <Leader>t :TagbarToggle<CR>
 
-"nnoremap <F4> :ctags -R --exclude=.git<CR>
-
-" Set cursorcolumn
+"Set cursorcolumn
 nmap <Leader>scc :set cuc<CR>
 nmap <Leader>Scc :set nocuc<CR>
 
@@ -222,46 +221,59 @@ noremap <silent><Leader>cn :cnext<CR>
 noremap <Leader>q :copen<CR>
 noremap <Leader>Q :cclose<CR>
 
+"Diff
+map <leader>gd :Gdiff<cr>
+map <leader>gs :Gstatus<cr>
+map <leader>gb :Gblame<cr>
+map <leader>gw! :Gwrite!<cr>
+
 "Spelling
-" Pressing ,ss will toggle and untoggle spell checking
+"Pressing ,ss will toggle and untoggle spell checking
 setlocal spell spelllang=en_gb
 setlocal nospell
 map <leader>ss :setlocal spell!<cr>
-
-" Shortcuts using <leader>
+"Next, previous
 map <leader>sn ]s
 map <leader>sp [s
+"Add word to spellfile
 map <leader>sa zg
+"Suggest spelling
 map <leader>s? z=
+
+"Delete surrounding function
+nmap <silent> dsf ds)db
 
 " Syntastic
 let g:syntastic_quiet_messages = { "type": "style" }
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_check_on_open=1
 let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" FileType
-let python_highlight_all = 1
-let g:pyindent_open_paren = '&sw'
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+"FileTypes
+"web
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType python nnoremap <F5> :w<CR>:!python %<CR>
-" let f=expand("%") | vnew | execute ".!python ".f
-autocmd FileType python setlocal complete-=i
-autocmd FileType python setlocal dictionary=~/.vim/dict/python
-autocmd FileType python setlocal complete+=k
 autocmd FileType html,htmldjango setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd BufEnter *html map <F11> :setfiletype htmldjango<CR>
 autocmd BufEnter *html map <S-F11> :setfiletype django<CR>
+"Python
+let python_highlight_all = 1
+"Fix double indentation
+let g:pyindent_open_paren = '&sw'
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python nnoremap <F5> :w<CR>:!python %<CR>
+autocmd FileType python setlocal complete-=i
+autocmd FileType python setlocal complete-=i
+autocmd FileType python setlocal dictionary=~/.vim/dict/python
+autocmd FileType python setlocal complete+=k
+autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 "Remove trailing whitespace upon saving python file
 autocmd BufWritePre *.py :%s/\s\+$//e
 
-" Add the virtualenv's site-packages to vim path
+"Add the virtualenv's site-packages to vim path
 py << EOF
 import os.path
 import sys
@@ -281,26 +293,14 @@ nnoremap <F4> :%s/<c-r><c-w>//g<c-f>$F/i
 set completeopt=longest,menuone
 let g:EclimCompletionMethod = 'omnifunc'
 
-" Removes error message when navigating away from unsaved buffer
+"Removes error message when navigating away from unsaved buffer
 set hidden
 
-"Make it easier to navigate windows]
+"Make it easier to navigate windows
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-
-"Alternate scrolling
-map j 5j
-map k 5k
-map h 5h
-map l 5l
-
-" F5 to recursively search directory
-map <F5> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-
-"Case insensitive filename completion
-set wildignorecase
 
 "Vimrc stuff
 nmap <silent> <Leader>ev :tabe $MYVIMRC<CR>
@@ -328,26 +328,26 @@ map <Leader>x "+d
 map <Leader>p :set paste<CR>"+p:set nopaste<CR>
 map <Leader>P :set paste<CR>"+P:set nopaste<CR>
 
-map <S-W> <Plug>CamelCaseMotion_w
-map <S-B> <Plug>CamelCaseMotion_b
-map <S-E> <Plug>CamelCaseMotion_e
+"Tasklist
+map <Leader>td <Plug>TaskList
+
+"Camel case motion
+"map <S-W> <Plug>CamelCaseMotion_w
+"map <S-B> <Plug>CamelCaseMotion_b
+"map <S-E> <Plug>CamelCaseMotion_e
 
 "Ctrl p
 map <C-b> :CtrlPBuffer<CR>
 map <C-m> :CtrlPMRU<CR>
 
+"Delimitmate
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
+"Diffs
 "Diffs should be vertically split!
 set diffopt+=vertical
 set re=1
-
-"%% is directory containing current file
-cabbr <expr> %% expand('%:p:h')
-
-"Indent entire document
-map <Leader><C-i> mzgg=G'z
 
 " YouCompleteMe setup
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -360,36 +360,17 @@ let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-map <Leader>td <Plug>TaskList
-
-"fixes terminal draw bug in Tmux
-set t_ut=
-
-nmap <Leader>t :TagbarToggle<CR>
-
 "Repeat motion
 let repmo_key=","
 let repmo_revkey="\\"
 
-"Disable annoying backup
-set nobackup
-set noswapfile
-nmap <F12> :nohl<CR>
-
-"Sudo write
-cmap w!! w !sudo tee % >/dev/null
-
-""Don't keep all fugative buffers open when not shown
-"autocmd BufReadPost fugitive://* set bufhidden=delete
-
-"Scroll wrapped lines normally
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-
 "Use ; as :
 nnoremap ; :
 
-" Fast saving
+"Saving
 nmap <Leader>w :w!<cr>
-" Switch CWD to the directory of the open buffer
+"Sudo write
+cmap w!! w !sudo tee % >/dev/null
+
+"cd
 map <Leader>cd :cd %:p:h<cr>:pwd<cr>
