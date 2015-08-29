@@ -3,7 +3,7 @@
 " Much copied from: k3mm0tar http://github.com/k3mm0tar
 
 syntax on
-set nocompatible
+set nocompatible 
 filetype on
 
 "Easy ways of getting into normal mode
@@ -76,8 +76,14 @@ Plugin 'majutsushi/tagbar'
 Plugin 'tommcdo/vim-exchange'
 "Run tmux commands from vim
 Plugin 'benmills/vimux'
+"Smart find and replace
+Plugin 'tpope/vim-abolish'
+"Traverse the undo/redo tree
+Plugin 'sjl/gundo.vim'
+"Helps with tab alignment
+Plugin 'godlygeek/tabular'
 
-""Text objects
+"Text objects
 Plugin 'kana/vim-textobj-user'
 Plugin 'bps/vim-textobj-python'
 Plugin 'b4winckler/vim-angry'
@@ -195,6 +201,9 @@ let NERDTreeShowHidden=1
 nmap <F2> :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.py[co]$', '\~$']
 
+"Gundo
+nnoremap <F3> :GundoToggle<CR>
+
 "Tagbar
 nmap <Leader>t :TagbarToggle<CR>
 
@@ -305,6 +314,7 @@ map <C-l> <C-w>l
 "Vimrc stuff
 nmap <silent> <Leader>ev :tabe $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
+nmap <silent> <Leader>bi :BundleInstall<CR>
 
 " Java
 map <Leader>ji :JavaImport<Return>
@@ -338,7 +348,7 @@ map <Leader>td <Plug>TaskList
 
 "Ctrl p
 map <C-b> :CtrlPBuffer<CR>
-map <C-m> :CtrlPMRU<CR>
+map <C-n> :CtrlPMRU<CR>
 
 "Delimitmate
 let delimitMate_expand_cr = 1
