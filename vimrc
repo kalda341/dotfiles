@@ -4,10 +4,12 @@
 
 syntax on
 set nocompatible 
+
 filetype on
+filetype plugin on
+filetype indent on
 
 "Easy ways of getting into normal mode
-inoremap jj <ESC>
 inoremap kk <ESC>
 let mapleader = "\<Space>"
 
