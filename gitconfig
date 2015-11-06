@@ -17,3 +17,5 @@
 	b = branch
 [core]
 	editor = vim
+[color]
+	status = always

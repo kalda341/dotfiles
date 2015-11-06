@@ -32,6 +32,9 @@ total_run_times 0
 ## Shortens units to a single character (kiB->k, GiB->G, etc.). Default is off.
 short_units yes
 
+#Hopefully prevent crashing
+text_buffer_size 1024
+
 ## How strict should if_up be when testing an interface for being up?
 ## The value is one of up, link or address, to check for the interface
 ## being solely up, being up and having link or being up, having link
@@ -89,12 +92,12 @@ mpd_port 6600
 #V ${exec exec amixer get Headphone -M | grep -oEm 1 "[[:digit:]]*%"}
 
 TEXT
-[{ "full_text" : "     ${mpd_title}-${mpd_artist} ${mpd_elapsed}/${mpd_length} " , "color" : "\#d68176"  },
-{"full_text": "  ${upspeed wlp4s0} ", "color":"\#ff0000"},
-{"full_text": "  ${downspeed wlp4s0} ", "color":"\#00fff2"},
-{ "full_text" : "   ${fs_free /home} " , "color" : "\#ffffff"  },
-{ "full_text" : "   ${memperc}%" },
-{ "full_text" : "   ${cpu cpu0}%" },
-{ "full_text" : "   ${battery_percent}%", "color" : "\#7690d6" },
-{ "full_text" : "   ${exec ponymix get-volume}%", "color" : "\#aa71ce" },
-{ "full_text" : "   ${time %a %d-%m-%y}  ${time %l:%M:%S %p}" }],
+[{ "full_text" : "     ${mpd_title}-${mpd_artist} ${mpd_elapsed}/${mpd_length} " , "color" : "\#d68176"  },\
+{"full_text": "  ${upspeed enp2s0} ", "color":"\#ff0000"},\
+{"full_text": "  ${downspeed enp2s0} ", "color":"\#00fff2"},\
+{ "full_text" : "   ${fs_free /home} " , "color" : "\#ffffff"},\
+{ "full_text" : "   ${memperc}%" },\
+{ "full_text" : "   ${cpu cpu0}%" },\
+{ "full_text" : "   ${battery_percent}%", "color" : "\#7690d6" },\
+{ "full_text" : "   ${exec ponymix get-volume}%", "color" : "\#aa71ce" },\
+{ "full_text" : "   ${time %a %d-%m-%y}  ${time %l:%M:%S %p}" }],\

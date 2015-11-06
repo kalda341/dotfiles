@@ -220,8 +220,8 @@ def_key "right"
 def_key "right"
   slave_screen
 
-def_key "right"
-  volume_up
+#def_key "right"
+#  volume_up
 
 def_key "l"
   next_column
@@ -229,8 +229,8 @@ def_key "l"
 def_key "l"
   slave_screen
 
-def_key "l"
-  volume_up
+#def_key "l"
+#  volume_up
 
 def_key "+"
   volume_up
@@ -241,8 +241,8 @@ def_key "left"
 def_key "left"
   master_screen
 
-def_key "left"
-  volume_down
+#def_key "left"
+#  volume_down
 
 def_key "h"
   previous_column
@@ -250,8 +250,8 @@ def_key "h"
 def_key "h"
   master_screen
 
-def_key "h"
-  volume_down
+#def_key "h"
+#  volume_down
 
 def_key "-"
   volume_down

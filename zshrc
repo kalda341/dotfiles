@@ -37,11 +37,13 @@ alias javac="javac -classpath ~/.path/java/junit.jar"
 
 alias sduo="sudo"
 
-export PATH=$PATH:/home/max/bin
+export PATH=$PATH:/home/max/bin:/home/max/scripts
 export PATH=$PATH:/home/max/.gem/ruby/2.1.0/bin
-export ECLIPSE_HOME=/usr/share/eclipse/
+export ECLIPSE_HOME=/lib/eclipse
 
-source ~/.tmuxinator.zsh
+if [ -f ~/.tmuxinator.zsh ]; then
+    source ~/.tmuxinator.zsh
+fi
 
 #Stop xon/xoff with ctrl s
 stty -ixon
@@ -50,7 +52,9 @@ stty stop undef
 alias mosh="SHELL=/bin/bash mosh"
 alias saltman="mosh root@104.236.4.207"
 
-. ~/Dev/work/Conversant/scram/shellrc.sh
+if [ -f ~/Dev/work/Conversant/scram/shellrc.sh ]; then
+    . ~/Dev/work/Conversant/scram/shellrc.sh
+fi
 
 mkdircd = function(){
     mkdir $1
@@ -58,6 +62,11 @@ mkdircd = function(){
 }
 
 alias ack='ACK_PAGER_COLOR="less -x4SRFX" /usr/bin/ack'
+
+#Colours in watch
+alias watch="watch --color"
+
+alias smount="sudo mount -o umask=0000"
 
 archey
 #zprof

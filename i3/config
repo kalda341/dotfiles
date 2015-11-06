@@ -25,8 +25,11 @@ floating_modifier $mod
 
 bindsym $mod+Escape exec xkill
 
+#Set terminal
+set $term urxvt
+
 # start a terminal
-bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec $term
 
 #Start browser
 bindsym $mod+b exec google-chrome-stable
@@ -153,11 +156,11 @@ for_window [title="Copying"] floating enable
 for_window [title="Deleting"] floating enable
 for_window [title="Moving"] floating enable
 
-#Cvim
-exec ~/scripts/cvim_server.py
+##Cvim
+#exec ~/scripts/cvim_server.py
 
-#In case the other monitor is plugged in
-exec ~/.screenlayout/two.sh
+##In case the other monitor is plugged in
+#exec ~/.screenlayout/two.sh
 
 #Desktop bacrground
 exec --no-startup-id nitrogen --restore
@@ -201,13 +204,13 @@ exec --no-startup-id ~/scripts/clipd
 bindsym $mod+x exec ~/scripts/clipd menu
 
 #Music player in scratchpad
-exec urxvt -e ncmpcpp
+exec $term -e ncmpcpp
 for_window [class="URxvt" title="ncmpcpp"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
 bindsym $mod+c [class="URxvt" title="ncmpcpp"] scratchpad show
 
 #Scratchpad terminal
 exec --no-startup-id tmux new scratchpad
-exec urxvt -title scratchpad-terminal
+exec $term -title scratchpad-terminal
 for_window [title="scratchpad-terminal"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
 bindsym $mod+a [title="scratchpad-terminal"] scratchpad show
 
@@ -248,15 +251,19 @@ bindsym F5 exec mpc --host $MPCHOST play
 bindsym F6 exec mpc --host $MPCHOST pause
 bindsym F7 exec mpc --host $MPCHOST prev
 bindsym F8 exec mpc --host $MPCHOST next
-#bindsym F10 exec mpc --host $MPCHOST volume 0
-bindsym F11 exec mpc --host $MPCHOST volume -5
-bindsym F12 exec mpc --host $MPCHOST volume +5
+
+bindsym Shift+F11 exec mpc --host $MPCHOST volume -5
+bindsym Shift+F12 exec mpc --host $MPCHOST volume +5
+
+bindsym F10 exec ponymix toggle
+bindsym F11 exec ponymix decrease 5 && ~/.i3/notify-volume.sh
+bindsym F12 exec ponymix increase 5 && ~/.i3/notify-volume.sh
 
 #Thinkpad keys
 # pulse audio volume control
-bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume 0  '-5%' && ~/.i3/notify-volume.sh
-bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume 0  '+5%' && ~/.i3/notify-volume.sh
-bindsym XF86AudioMute exec /usr/bin/pactl set-sink-volume 0 0 && ~/.i3/notify-volume.sh
+bindsym XF86AudioLowerVolume exec ponymix decrease 5 && ~/.i3/notify-volume.sh
+bindsym XF86AudioRaiseVolume exec ponymix increase 5 && ~/.i3/notify-volume.sh
+bindsym XF86AudioMute exec ponymix toggle & ~/.i3/notify-volume.sh
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
