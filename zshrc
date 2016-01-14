@@ -1,7 +1,6 @@
 unset GREP_OPTIONS
 
-ZSHA_BASE=$HOME/.zsh-antigen
-source $ZSHA_BASE/antigen/antigen.zsh
+source $HOME/dotfiles/antigen/antigen.zsh
 zmodload zsh/zprof
  
 antigen-use oh-my-zsh
