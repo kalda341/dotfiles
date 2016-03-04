@@ -126,13 +126,13 @@ mode "resize" {
 # Pressing up will shrink the window’s height.
 # Pressing down will grow the window’s height.
     bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
 
 # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -156,54 +156,31 @@ for_window [title="Copying"] floating enable
 for_window [title="Deleting"] floating enable
 for_window [title="Moving"] floating enable
 
-##Cvim
-#exec ~/scripts/cvim_server.py
-
-##In case the other monitor is plugged in
-#exec ~/.screenlayout/two.sh
-
 #Desktop bacrground
 exec --no-startup-id nitrogen --restore
-
-#Hide mouse when not being used
-#exec --no-startup-id unclutter
 
 #Xflux
 exec --no-startup-id xflux -l -36.8484597 -g 174.76333150000005 -r
 
-#Remap backspace
-exec --no-startup-id ~/scripts/keymap.sh
-
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command bash $HOME/.i3/statusline
-        position top
-		tray_output LVDS1
-		height 18
-		font pango:Icons 10, Monospace 10
-        colors {
-                    statusline  #ECF0F1
-                    background  #2C3E50
+    status_command bash $HOME/.i3/statusline
+    position top
+    tray_output LVDS1
+    height 18
+    font pango:Icons 10, Monospace 10
+    colors {
+        statusline  #ECF0F1
+        background  #2C3E50
 
-                    focused_workspace  #3498DB #2C3E50 #f5f5f5
-                    active_workspace   #1ABC9C #2C3E50 #BDC3C7
-                    inactive_workspace #2C3E50 #2C3E50 #BDC3C7
-                    urgent_workspace   #f92672 #2C3E50 #BDC3C7
-        }
+        focused_workspace  #3498DB #2C3E50 #f5f5f5
+        active_workspace   #1ABC9C #2C3E50 #BDC3C7
+        inactive_workspace #2C3E50 #2C3E50 #BDC3C7
+        urgent_workspace   #f92672 #2C3E50 #BDC3C7
+    }
 }
 
-#Weechat startup
-assign [class="URxvt" title="WeeChat*"] chat
-exec urxvt -e ~/scripts/weechat.sh
-#Jump to chat client
-bindsym $mod+g [class="URxvt" title="WeeChat*"] focus
-
-#Clipboard thingy
-exec --no-startup-id ~/scripts/clipd
-bindsym $mod+x exec ~/scripts/clipd menu
-
-#Music player in scratchpad
 exec $term -e ncmpcpp
 for_window [class="URxvt" title="ncmpcpp"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
 bindsym $mod+c [class="URxvt" title="ncmpcpp"] scratchpad show
@@ -246,7 +223,7 @@ bindsym $mod+N exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
 bindsym F9 exec i3-msg workspace none && i3lock -c 111111 -d
 
 #mpc
-set $MPCHOST "nas"
+set $MPCHOST "localhost"
 bindsym F5 exec mpc --host $MPCHOST play
 bindsym F6 exec mpc --host $MPCHOST pause
 bindsym F7 exec mpc --host $MPCHOST prev
@@ -268,5 +245,3 @@ bindsym XF86AudioMute exec ponymix toggle & ~/.i3/notify-volume.sh
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
-
-synergyc --name Laptop-Manjaro 192.168.1.165
