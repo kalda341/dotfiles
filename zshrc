@@ -67,5 +67,5 @@ alias watch="watch --color"
 
 alias smount="sudo mount -o umask=0000"
 
-archey
+archey3
 #zprof
