@@ -11,9 +11,60 @@
 	tool = vimdiff
 [difftool]
 	prompt = false
-[alias]
-	d = difftool
-	co = checkout
-	b = branch
 [core]
 	editor = vim
+[alias]
+    #From https://gist.github.com/mwhite/6887990
+    #Log
+    l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+
+    #Add
+    a = add
+    ap = add -p
+
+    #Commit
+    c = commit --verbose
+    ca = commit -a --verbose
+    cm = commit -m
+    cam = commit -a -m
+    m = commit --amend --verbose
+
+    #Diff
+    d = diff
+    ds = diff --stat
+    dc = diff --cached
+
+    #Status
+    s = status -s
+
+    #Checkout
+    co = checkout
+    cob = checkout -b
+
+    #Tag
+    lasttag = describe --tags --abbrev=0
+    lt = describe --tags --abbrev=0
+
+    # list branches sorted by last modified
+    b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+
+    #Reset
+    r = reset
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rh2 = reset HEAD^^ --hard
+
+    #Merge
+    ours = "!f() { git co --ours $@ && git add $@; }; f"
+    theirs = "!f() { git co --theirs $@ && git add $@; }; f"
+
+    #Stash
+    sl = stash list
+    sa = stash apply
+    ss = stash save
+
+    # list aliases
+    la = "!git config -l | grep alias | cut -c 7-"
