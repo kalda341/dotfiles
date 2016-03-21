@@ -52,8 +52,8 @@ NET:${if_existing /sys/class/net/eth0/operstate up}\
 ${upspeedgraph eth0 10,100 CCCC00 FFFF00 -t -l}↑${upspeed eth0}\
 ${downspeedgraph eth0 10,100 CCCC00 FFFF00 -t -l}↓${downspeed eth0} \
 ${else}\
-${upspeedgraph wlan0 10,100 AA7700 FFDD00 -t -l}↑${upspeed wlp4s0}\
-${downspeedgraph wlan0 10,100 AA7700 FFDD00 -t -l}↓${downspeed wlp4s0} \
+${upspeedgraph enp2s0 10,100 AA7700 FFDD00 -t -l}↑${upspeed enp2s0}\
+${downspeedgraph enp2s0 10,100 AA7700 FFDD00 -t -l}↓${downspeed enp2s0} \
 ${endif}\
 BAT:$color${battery_percent BAT0}% \
 ${color gray}${time %a} ${time %e} ${time %b} ${time %l:%M}:${time %S}\

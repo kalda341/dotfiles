@@ -27,4 +27,3 @@
     - mkdir -p ~/src
     - mkdir -p ~/Downloads
     - mkdir -p ~/bin
-    - vim -c "BundleInstall"

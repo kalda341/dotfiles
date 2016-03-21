@@ -8,7 +8,7 @@ import:
 match:
     strong_rec_thresh: 0.15
 
-#plugins: inline discogs mpdupdate fetchart
+plugins: chroma fetchart
 
 mpd:
     host: runeaudio.lan

@@ -7,7 +7,7 @@
 #
 ## set it in order to make tag editor and renaming files work properly
 #
-mpd_host = "runeaudio.lan"
+mpd_host = "nas"
 mpd_port = "6600"
 mpd_music_dir = "/nas/Music"
 
@@ -15,16 +15,22 @@ mpd_music_dir = "/nas/Music"
 enable_window_title = no
 
 colors_enabled                        = "yes"
-song_status_format                    = "$0{$8%t$9} on {$5%b$9} by {$3%a}" 
-song_columns_list_format              = "(30)[green]{a} (40)[]{t|f} (30)[blue]{b}"
-now_playing_prefix                    = "$b$8> $/b$9"
+song_status_format                    = "{$5%t$0} by {$3%a$0} on {$7%b} {$6%y}"
+song_columns_list_format              = "(4f)[red]{n} (40)[blue]{t} (25)[green]{a} (30)[cyan]{b} (4f)[magenta]{y}"
+
+now_playing_prefix                    = " "
 now_playing_suffix                    = ""
+
 progressbar_look                      = "─  "
 progressbar_boldness                  = "no"
 
-user_interface                        = "classic"
-playlist_display_mode                 = "columns"
-#media_library_disable_two_column_mode = "yes"
+user_interface                        = "alternative"
+playlist_display_mode = "columns"
+browser_display_mode = "columns"
+search_engine_display_mode = "columns"
+playlist_editor_display_mode = "columns"
+follow_now_playing_lyrics = "yes"
+display_bitrate = "yes"
 header_visibility                     = "no"
 statusbar_visibility                  = "yes"
 titles_visibility                     = "no"
@@ -34,10 +40,20 @@ autocenter_mode                       = "yes"
 centered_cursor                       = "yes"
 mouse_support                         = "yes"
 discard_colors_if_item_is_selected    = "yes"
-#fancy_scrolling                       = "yes"
 ignore_leading_the                    = "yes"
 
 main_window_color           = "default"
 main_window_highlight_color = "default"
 progressbar_color           = "red"
-active_column_color         = "yellow"
+
+use_console_editor = "yes"
+external_editor = "vim"
+
+visualizer_fifo_path = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_sync_interval = "30" 
+visualizer_in_stereo = "yes"
+#visualizer_type = "wave"
+visualizer_type = "spectrum"
+
+media_library_primary_tag = "album_artist"

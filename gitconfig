@@ -1,18 +1,18 @@
 [user]
-	email = kalda341@gmail.com
-	name = Max Lay
+    email = kalda341@gmail.com
+    name = Max Lay
 [push]
-	default = simple
+    default = simple
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 [github]
-	user = kalda341
+    user = kalda341
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 [difftool]
-	prompt = false
+    prompt = false
 [core]
-	editor = vim
+    editor = vim
 [alias]
     #From https://gist.github.com/mwhite/6887990
     #Log
@@ -68,3 +68,9 @@
 
     # list aliases
     la = "!git config -l | grep alias | cut -c 7-"
+
+[color]
+    status = always
+    editor = vim
+[color]
+    status = always

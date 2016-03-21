@@ -127,11 +127,11 @@ endif
 
 
 "Indentation and tabs
-set autoindent
-set expandtab
-set shiftwidth=4
 set softtabstop=4
+set shiftwidth=4
+set expandtab
 set smarttab
+set autoindent
 "Indent entire document
 map <Leader><C-i> mzgg=G'z
 
