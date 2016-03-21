@@ -59,5 +59,7 @@ mkdircd = function(){
 
 alias ack='ACK_PAGER_COLOR="less -x4SRFX" /usr/bin/ack'
 
+alias others='printf "\33]50;%s%d\007" "xft:Source\ Code\ Pro\ Medium:pixelsize=2"'
+
 archey
 #zprof
