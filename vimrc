@@ -36,8 +36,6 @@ Plugin 'mattn/gist-vim'
 "Gist
 Plugin 'mattn/webapi-vim'
 Plugin 'tpope/vim-fugitive'
-"Erlang
-Plugin 'jimenezrick/vimerl'
 "Best theme ever
 Plugin 'morhetz/gruvbox'
 ""Autocompletion of quotes, brackets, etc
@@ -84,6 +82,15 @@ Plugin 'tpope/vim-abolish'
 Plugin 'sjl/gundo.vim'
 "Helps with tab alignment
 Plugin 'godlygeek/tabular'
+
+"Erlang
+Plugin 'vim-erlang/vim-erlang-tags'
+Plugin 'vim-erlang/vim-erlang-compiler'
+Plugin 'vim-erlang/vim-erlang-omnicomplete'
+Plugin 'vim-erlang/vim-erlang-runtime'
+Plugin 'vim-erlang/erlang-motions.vim'
+Plugin 'vim-erlang/vim-dialyzer'
+Plugin 'vim-erlang/vim-rebar'
 
 "Text objects
 Plugin 'kana/vim-textobj-user'
@@ -342,6 +349,11 @@ map <Leader>P :set paste<CR>"+P:set nopaste<CR>
 
 "Tasklist
 map <Leader>td <Plug>TaskList
+
+"Run line in shell
+map <Leader>r :exec '!'.getline('.')<CR>
+"Run line in shell and insert output below
+"TODO
 
 "Camel case motion
 "map <S-W> <Plug>CamelCaseMotion_w
