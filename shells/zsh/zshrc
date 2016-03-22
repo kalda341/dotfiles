@@ -1,6 +1,6 @@
 unset GREP_OPTIONS
 
-source $HOME/dotfiles/antigen/antigen.zsh
+source $HOME/dotfiles/shells/zsh/antigen.zsh
 zmodload zsh/zprof
  
 antigen-use oh-my-zsh
