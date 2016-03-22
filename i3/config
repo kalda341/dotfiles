@@ -20,7 +20,7 @@ floating_modifier $mod
 bindsym $mod+Escape exec xkill
 
 #Set terminal
-set $term urxvt
+set $term urxvt -e /bin/fish
 
 # start a terminal
 bindsym $mod+Return exec $term
