@@ -1,22 +1,31 @@
+- shell:
+    - mkdir -p ~/.sshrc.d
+    - mkdir -p ~/src
+    - mkdir -p ~/Downloads
+    - mkdir -p ~/bin
+
 - link:
     ~/.vimrc: editors/vim/vimrc
+
     ~/.tmux.conf: shells/tmux/tmux.conf
     ~/.zshrc: shells/zsh/zshrc
     ~/.bashrc: shells/bash/bashrc
     ~/.config/fish/config.fish: shells/fish/config.fish
+
     ~/.i3: desktop/i3/
     ~/.Xresources: desktop/Xresources
     ~/.config/dunst: desktop/dunst
+
     ~/.gitconfig: version_control/gitconfig
+
     ~/.vimperatorrc: browsers/vimperatorrc
     ~/.config/ranger: browsers/ranger
     ~/.config/luakit: browsers/luakit
     ~/.vimperatorrc: browsers/vimperatorrc
+
     ~/.ncmpcpp: music/ncmpcpp
     ~/.config/beets: music/beets
-    ~/.weechat: chat/weechat
 
-- shell:
-    - mkdir -p ~/src
-    - mkdir -p ~/Downloads
-    - mkdir -p ~/bin
+    ~/.sshrc: ssh/sshrc
+    ~/.sshrc.d/.vimrc: editors/vim/vimrc
+    ~/.sshrc.d/.tmux.conf: shells/tmux/tmux.conf
