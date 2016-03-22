@@ -1,29 +1,21 @@
-- clean: ['~']
-
 - link:
-    ~/.vimrc: vimrc
-    ~/.tmux.conf: tmux.conf
-    ~/.tmux: tmux/
-    ~/.i3: i3/
-    ~/.zshrc: zshrc
-    ~/.bashrc: bashrc
-    ~/.gitconfig: gitconfig
-    ~/.vimperatorrc: vimperatorrc
-    ~/.ncmpcpp: ncmpcpp
-    ~/.Xresources: Xresources
-    ~/.config/beets: beets
-    ~/.config/dunst: dunst
-    ~/.config/luakit: luakit
-    ~/.config/ranger: ranger
-    ~/.vimperatorrc: vimperatorrc
-    ~/.zsh-antigen: zsh-antigen
-    ~/.synergy.conf: synergy.conf
-    ~/.weechat: weechat
+    ~/.vimrc: editors/vim/vimrc
+    ~/.tmux.conf: shells/tmux/tmux.conf
+    ~/.zshrc: shells/zsh/zshrc
+    ~/.bashrc: shells/bash/bashrc
+    ~/.i3: desktop/i3/
+    ~/.Xresources: desktop/Xresources
+    ~/.config/dunst: desktop/dunst
+    ~/.gitconfig: version_control/gitconfig
+    ~/.vimperatorrc: browsers/vimperatorrc
+    ~/.config/ranger: browsers/ranger
+    ~/.config/luakit: browsers/luakit
+    ~/.vimperatorrc: browsers/vimperatorrc
+    ~/.ncmpcpp: music/ncmpcpp
+    ~/.config/beets: music/beets
+    ~/.weechat: chat/weechat
 
 - shell:
-    - ln -s ~/.zprezto/runcoms/zpreztorc ~/.zpreztorc
-    - ln -s ~/.zprezto/runcoms/zshrc ~/.zshrc
-    - ln -s ~/.zprezto/runcoms/zprofile ~/.zprofile
     - mkdir -p ~/src
     - mkdir -p ~/Downloads
     - mkdir -p ~/bin
