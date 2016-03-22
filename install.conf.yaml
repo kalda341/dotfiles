@@ -3,6 +3,7 @@
     ~/.tmux.conf: shells/tmux/tmux.conf
     ~/.zshrc: shells/zsh/zshrc
     ~/.bashrc: shells/bash/bashrc
+    ~/.config/fish/config.fish: shells/fish/config.fish
     ~/.i3: desktop/i3/
     ~/.Xresources: desktop/Xresources
     ~/.config/dunst: desktop/dunst
