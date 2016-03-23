@@ -11,7 +11,7 @@ runtmux() {
     rm -rf $TMUXDIR/.sshrc.d
     cp -r $SSHHOME/.sshrc $SSHHOME/bashsshrc $SSHHOME/sshrc $SSHHOME/.sshrc.d $TMUXDIR;
     local CONFIG="$SSHHOME/.sshrc.d/.tmux.conf"
-    TERM=rxvt SSHHOME=$TMUXDIR SHELL=$TMUXDIR/bashsshrc tmux -f $CONFIG -S $TMUXDIR/tmuxserver $@
+    SSHHOME=$TMUXDIR SHELL=$TMUXDIR/bashsshrc tmux -f $CONFIG -S $TMUXDIR/tmuxserver $@
 }
 
 command_exists () {
