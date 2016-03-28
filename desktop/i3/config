@@ -10,9 +10,7 @@ gaps outer 8
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Source Code Pro for Powerline 15px
+font pango:Source Code Pro for Powerline 13px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -41,7 +39,7 @@ bindsym $mod+minus scratchpad show
 # kill focused window
 bindsym $mod+Shift+q kill
 
-set $ROFICONF -bg "#282828" -fg "#ebdbb2" -font "Source Code Pro for Powerline 12"
+set $ROFICONF -bg "#282828" -fg "#ebdbb2" -font "Source Code Pro for Powerline 12" -hide-scrollbar
 
 # start launcher
 bindsym $mod+d exec rofi -show run $ROFICONF
@@ -193,13 +191,13 @@ bindsym $mod+a [title="scratchpad-terminal"] scratchpad show
 #Notifications
 exec --no-startup-id dunst -config ~/.i3/dunstrc
 #Mpd notifications
-exec --no-startup-id ~/.i3/mpd-notify.py
+exec --no-startup-id ~/.i3/scripts/mpd-notify.py
 
-bindsym $mod+i exec i3-input -F 'rename workspace to "%s"' -P 'New name for this workspace: '`` | ~/.i3/rename_workspace.py
+bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' $ROFICONF | ~/.i3/scripts/rename_workspace.py
 
-bindsym $mod+t exec ~/.i3/get_workspace_options.py | dmenu | ~/.i3/go_to_workspace.py
-bindsym $mod+Shift+t exec bash -c '~/.i3/get_workspace_options.py | dmenu | tee  >(~/.i3/go_to_workspace.py) >(~/.i3/move_to_workspace.py)'
-bindsym $mod+y exec bash -c '~/.i3/get_workspace_options.py | dmenu | (~/.i3/move_to_workspace.py)'
+bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jump to workspace: " $ROFICONF | ~/.i3/scripts/go_to_workspace.py
+bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " $ROFICONF | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
+bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " $ROFICONF | (~/.i3/scripts/move_to_workspace.py)'
 
 bindsym $mod+Shift+y move workspace to output left
 
@@ -214,9 +212,9 @@ bindsym $modry move workspace to output left
 bindsym $mod+m exec ~/.screenlayout/two.sh && nitrogen --restore
 bindsym $mod+shift+m exec ~/.screenlayout/one.sh && nitrogen --restore
 
-#Marks (NAME)
-bindsym $mod+Shift+n exec i3-input -F 'mark %s' -P 'Mark name: '
-bindsym $mod+N exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
+#Marks
+bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " $ROFICONF | ~/.i3/scripts/jump_to_mark.sh'
+bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " $ROFICONF | ~/.i3/scripts/mark_window.sh'
 
 #lock
 bindsym F9 exec i3-msg workspace none && i3lock -c 111111 -d
@@ -232,14 +230,14 @@ bindsym Shift+F11 exec mpc --host $MPCHOST volume -5
 bindsym Shift+F12 exec mpc --host $MPCHOST volume +5
 
 bindsym F10 exec ponymix toggle
-bindsym F11 exec ponymix decrease 5 && ~/.i3/notify-volume.sh
-bindsym F12 exec ponymix increase 5 && ~/.i3/notify-volume.sh
+bindsym F11 exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
+bindsym F12 exec ponymix increase 5 && ~/.i3/scripts/notify-volume.sh
 
 #Thinkpad keys
 # pulse audio volume control
-bindsym XF86AudioLowerVolume exec ponymix decrease 5 && ~/.i3/notify-volume.sh
-bindsym XF86AudioRaiseVolume exec ponymix increase 5 && ~/.i3/notify-volume.sh
-bindsym XF86AudioMute exec ponymix toggle & ~/.i3/notify-volume.sh
+bindsym XF86AudioLowerVolume exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
+bindsym XF86AudioRaiseVolume exec ponymix increase 5 && ~/.i3/scripts/notify-volume.sh
+bindsym XF86AudioMute exec ponymix toggle & ~/.i3/scripts/notify-volume.sh
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
