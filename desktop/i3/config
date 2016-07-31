@@ -18,7 +18,7 @@ floating_modifier $mod
 bindsym $mod+Escape exec xkill
 
 #Set terminal
-set $term urxvt -e /bin/fish
+set $term urxvt -e /bin/zsh
 
 # start a terminal
 bindsym $mod+Return exec $term
@@ -196,8 +196,8 @@ exec --no-startup-id ~/.i3/scripts/mpd-notify.py
 bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' $ROFICONF | ~/.i3/scripts/rename_workspace.py
 
 bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jump to workspace: " $ROFICONF | ~/.i3/scripts/go_to_workspace.py
-bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " $ROFICONF | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
-bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " $ROFICONF | (~/.i3/scripts/move_to_workspace.py)'
+bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " $ROFICONF | (~/.i3/scripts/move_to_workspace.py)'
+bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " $ROFICONF | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
 
 bindsym $mod+Shift+y move workspace to output left
 
@@ -217,7 +217,9 @@ bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p
 bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " $ROFICONF | ~/.i3/scripts/mark_window.sh'
 
 #lock
-bindsym F9 exec i3-msg workspace none && i3lock -c 111111 -d
+set $lock i3lock -c 000000 -d
+bindsym F9 exec $lock
+exec --no-startup-id xautolock -time 5 -locker $lock &
 
 #mpc
 set $MPCHOST "localhost"
@@ -242,3 +244,4 @@ bindsym XF86AudioMute exec ponymix toggle & ~/.i3/scripts/notify-volume.sh
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
+
