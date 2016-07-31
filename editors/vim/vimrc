@@ -9,8 +9,11 @@ filetype on
 filetype plugin on
 filetype indent on
 
+set shell=/bin/bash
+
 "Easy ways of getting into normal mode
 inoremap kk <ESC>
+inoremap jj <ESC>
 let mapleader = "\<Space>"
 
 let bundleinstall = 0
@@ -51,7 +54,7 @@ Plugin 'ctrlp.vim'
 "For dealing with surrounds
 Plugin 'tpope/vim-surround' 
 "Guess indents based on file and containing directory
-Plugin 'tpope/vim-sleuth'
+"Plugin 'tpope/vim-sleuth'
 "Need to find time to configure. For . key
 Plugin 'tpope/vim-repeat'
 ""Handy plugin for moving through camel case words
@@ -91,6 +94,9 @@ Plugin 'vim-erlang/vim-erlang-runtime'
 Plugin 'vim-erlang/erlang-motions.vim'
 Plugin 'vim-erlang/vim-dialyzer'
 Plugin 'vim-erlang/vim-rebar'
+"Elixir
+Plugin 'elixir-lang/vim-elixir'
+
 
 "Text objects
 Plugin 'kana/vim-textobj-user'
@@ -165,6 +171,7 @@ set list
 
 "Line numbers and limits
 set number                      " Show line numbers
+set relativenumber
 set cc=80                       " Ver line in 80 column
 set cursorline
 
