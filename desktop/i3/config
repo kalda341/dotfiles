@@ -207,7 +207,10 @@ bindsym $mod+Up exec $control up go
 bindsym $mod+Down exec $control down go
 
 # move workspace between outputs
-bindsym $modry move workspace to output left
+bindsym $mod+Shift+Left move workspace to output left
+bindsym $mod+Shift+Right move workspace to output right
+bindsym $mod+Shift+Up move workspace to output up
+bindsym $mod+Shift+Down move workspace to output down
 
 bindsym $mod+m exec ~/.screenlayout/two.sh && nitrogen --restore
 bindsym $mod+shift+m exec ~/.screenlayout/one.sh && nitrogen --restore
