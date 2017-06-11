@@ -3,7 +3,7 @@ URxvt.geometry: 250x45 ! make tput bold actually be bold font, not just differen
 URxvt.intensityStyles: false
 URxvt.urgentOnBell: true
 URxvt.saveLines: 1000
-URxvt*font: xft:Source\ Code\ Pro\ Medium:pixelsize=14:antialias=true:hinting=true
+URxvt*font: xft:iosevka-regular:antialias=true:hinting=true
 
 !URxvt.font: xft:Source Code Pro Medium:pixelsize=9
 !URxvt.font: xft:DejaVu Sans Mono:size=10
