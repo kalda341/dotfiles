@@ -1,9 +1,8 @@
 " ~/.vimrc
 " Author: Max Lay
-" Much copied from: k3mm0tar http://github.com/k3mm0tar
 
 syntax on
-set nocompatible 
+set nocompatible
 
 filetype on
 filetype plugin on
@@ -89,6 +88,10 @@ Plug 'vim-erlang/erlang-motions.vim', { 'for': 'erlang' }
 Plug 'vim-erlang/vim-dialyzer', { 'for': 'erlang' }
 Plug 'vim-erlang/vim-rebar', { 'for': 'erlang' }
 
+" JS
+"Autofix JS with ESLint
+Plug 'ruanyl/vim-fixmyjs'
+
 " Misc
 " Guess indents based on file and containing directory
  Plug 'tpope/vim-sleuth'
@@ -106,6 +109,9 @@ call plug#end()
 "set mouse=a
 " Fix backspace
 set backspace=indent,eol,start
+"Disable ex mode
+map q: <Nop>
+nnoremap Q <nop>
 " Increase command history
 set history=200
 "Use ; as :
@@ -120,6 +126,8 @@ nmap <Leader>w :w!<cr>
 cmap w!! w !sudo tee % >/dev/null
 "Reload file if edits happen somewhere else
 set autoread
+"Auto resize panes on terminal resize
+autocmd VimResized * wincmd =
 
 "Terminal setup
 set termencoding=utf-8
@@ -133,14 +141,36 @@ if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-"Indentation and tabs
+" Indentation
+function UseTabs(...)
+    if a:0 > 0
+       let width = a:1
+    else
+       let width = 4
+    end
+    set noexpandtab
+    let &tabstop=width
+endfunction
+command UseTabs call UseTabs()
+
+function UseSpaces(...)
+    if a:0 > 0
+       let width = a:1
+    else
+       let width = 4
+    end
+    let &softtabstop=width
+    let &shiftwidth=width
+    set expandtab
+endfunction
+command UseSpaces call UseSpaces()
 " Commented out because Vim Sleuth should figure it out automatically
 "set softtabstop=4
 "set shiftwidth=4
 "set expandtab
 "set smarttab
 set autoindent
-set backspace=indent,eol,start
+set autoindent
 "Indent entire document
 map <Leader><C-i> mzgg=G'z
 
@@ -169,7 +199,7 @@ set list
 "Line numbers and limits
 set number                      " Show line numbers
 set relativenumber
-set cc=80                       " Ver line in 80 column
+set cc=100                       " Ver line in 80 column
 set cursorline
 
 "Folds
@@ -249,6 +279,8 @@ noremap <silent><Leader>cn :cnext<CR>
 "Quickfix
 noremap <Leader>q :copen<CR>
 noremap <Leader>Q :cclose<CR>
+noremap gn :cn<CR>
+noremap gp :cp<CR>
 
 "Diff
 "Diff
@@ -303,6 +335,7 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,htmldjango setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd BufEnter *html map <F11> :setfiletype htmldjango<CR>
 autocmd BufEnter *html map <S-F11> :setfiletype django<CR>
+
 "Python
 let python_highlight_all = 1
 "Fix double indentation
@@ -316,6 +349,7 @@ autocmd FileType python setlocal complete+=k
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 "Remove trailing whitespace upon saving python file
 autocmd BufWritePre *.py :%s/\s\+$//e
+let g:neomake_python_flake8_maker = { 'args': ['--max-line-length=100', '--ignore=E302'], }
 
 "Add Python virtualenv's site-packages to vim path
 py << EOF
@@ -378,13 +412,18 @@ map <Leader>r :exec '!'.getline('.')<CR>
 "Ctrl p
 map <C-b> :CtrlPBuffer<CR>
 map <C-n> :CtrlPMRU<CR>
-"Significantly improve performance
-let g:ctrlp_user_command = {
-   \'types' : {
-   \    1: ['.git', 'cd %s && git ls-files'],
-   \  },
-   \  'fallback': 'find %s -type f'
-   \}
+
+"Significantly improve performance using The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 "Delimitmate
 let delimitMate_expand_cr = 1
