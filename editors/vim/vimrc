@@ -24,7 +24,7 @@ endif
 call plug#begin()
 " File navigation and manipulation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 Plug 'tpope/vim-eunuch'
 " Find (and replace)
 Plug 'rking/ag.vim'
@@ -60,7 +60,7 @@ Plug 'tommcdo/vim-exchange'
 
 " Motions
 Plug 'tpope/vim-surround'
-Plug 'EasyMotion'
+Plug 'easymotion/vim-easymotion'
 Plug 'godlygeek/tabular'
 ""Handy plugin for moving through camel case words
 "Plug 'camelcasemotion'

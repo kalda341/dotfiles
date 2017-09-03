@@ -28,6 +28,7 @@
     ca = commit -a --verbose
     cm = commit -m
     cam = commit -a -m
+    commend = commit --amend --verbose
     m = commit --amend --verbose
 
     #Diff
@@ -66,9 +67,17 @@
     sa = stash apply
     ss = stash save
 
+    #Clean
+    die = clean -fdx
+
     # list aliases
     la = "!git config -l | grep alias | cut -c 7-"
+
+    # pull
+    up = "!git remote update -p; git merge --ff-only @{u}"
 
 [color]
     status = always
     editor = vim
+[pull]
+    ff = only
