@@ -3,9 +3,10 @@
     - mkdir -p ~/src
     - mkdir -p ~/Downloads
     - mkdir -p ~/bin
+    - mkdir -p ~/.config/nvim
 
 - link:
-    ~/.vimrc: editors/vim/vimrc
+    ~/.config/nvim/init.vim: editors/vim/vimrc
 
     ~/.tmux.conf: shells/tmux/tmux.conf
     ~/.zshrc: shells/zsh/zshrc
