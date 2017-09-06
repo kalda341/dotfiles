@@ -24,7 +24,11 @@ endif
 call plug#begin()
 " File navigation and manipulation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'kien/ctrlp.vim'
+" More precise, faster matcher than CtrlP
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'pbogut/fzf-mru.vim'
+"
 Plug 'tpope/vim-eunuch'
 " Find (and replace)
 Plug 'rking/ag.vim'
@@ -231,6 +235,12 @@ nnoremap <F4> :%s/<c-r><c-w>//g<c-f>$F/i
 " Leader / to clear search highligting
 nmap <Leader>/ :nohlsearch<CR>
 
+" Fuzzy find
+nmap <C-p> :Files<Cr>
+nmap <C-b> :Buffers<Cr>
+nmap <C-c> :Commits<Cr>
+nmap <C-n> :FZFMru<Cr>
+
 "Allows undo after file is closed
 if exists("&undodir")
     set undofile
@@ -408,10 +418,6 @@ map <Leader>r :exec '!'.getline('.')<CR>
 "map <S-W> <Plug>CamelCaseMotion_w
 "map <S-B> <Plug>CamelCaseMotion_b
 "map <S-E> <Plug>CamelCaseMotion_e
-
-"Ctrl p
-map <C-b> :CtrlPBuffer<CR>
-map <C-n> :CtrlPMRU<CR>
 
 "Significantly improve performance using The Silver Searcher
 if executable('ag')
