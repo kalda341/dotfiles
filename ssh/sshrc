@@ -23,7 +23,12 @@ if command_exists vim; then
 fi
 
 if command_exists tmux; then
-    if [ -z $TMUX ]; then 
+    # Ensure correct terminfo
+    mkdir -p ~/.terminfo/r/
+    if [ ! -f ~/.terminfo/r/rxvt-unicode-256color ]; then
+        cp $SSHHOME/.sshrc.d/rxvt-unicode-256color ~/.terminfo/r/
+    fi
+    if [ -z $TMUX ]; then
         runtmux attach || runtmux new
     fi
 fi

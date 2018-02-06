@@ -30,3 +30,4 @@
     ~/.sshrc: ssh/sshrc
     ~/.sshrc.d/.vimrc: editors/vim/vimrc
     ~/.sshrc.d/.tmux.conf: shells/tmux/tmux.conf
+    ~/.sshrc.d/rxvt-unicode-256color: /usr/share/terminfo/r/rxvt-unicode-256color
