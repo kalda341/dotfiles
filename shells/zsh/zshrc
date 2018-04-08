@@ -44,3 +44,11 @@ alias vim='nvim'
 
 alias ack='ACK_PAGER_COLOR="less -x4SRFX" /usr/bin/ack'
 alias others='printf "\33]50;%s%d\007" "xft:Source\ Code\ Pro\ Medium:pixelsize=2"'
+
+export ANDROID_HOME=/home/max/Android/Sdk
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
