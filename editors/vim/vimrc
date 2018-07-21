@@ -1,182 +1,180 @@
 " ~/.config/nvim/init.vim
 " Author: Max Lay
 if &compatible
- set nocompatible
+  set nocompatible
 endif
 
 " Plugins
 " Add the dein installation directory into runtimepath
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 call dein#begin(expand('~/.vim/dein')) " plugins' root path
+  call dein#add('Shougo/dein.vim')
 
-call dein#add('Shougo/dein.vim')
+  " File navigation and manipulation
+  call dein#add('scrooloose/nerdtree')
+  "Nerdtree file browser
+  let NERDTreeDirArrows=0
+  let NERDTreeShowHidden=1
+  nmap <F2> :NERDTreeToggle<CR>
+  let NERDTreeIgnore=['\.py[co]$', '\~$']
 
-" File navigation and manipulation
-call dein#add('scrooloose/nerdtree')
-"Nerdtree file browser
-let NERDTreeDirArrows=0
-let NERDTreeShowHidden=1
-nmap <F2> :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\.py[co]$', '\~$']
+  " More precise, faster matcher than CtrlP
+  call dein#add('junegunn/fzf', {'build': './install --all', 'merged': 0})
+  call dein#add('junegunn/fzf.vim', {'depends': 'fzf'})
+  call dein#add('pbogut/fzf-mru.vim', {'depends': 'fzf'})
+  nmap <C-p> :Files<Cr>
+  nmap <C-b> :Buffers<Cr>
+  nmap <C-c> :Commits<Cr>
+  nmap <C-n> :FZFMru<Cr>
 
-" More precise, faster matcher than CtrlP
-call dein#add('junegunn/fzf', {'build': './install --all', 'merged': 0})
-call dein#add('junegunn/fzf.vim', {'depends': 'fzf'})
-call dein#add('pbogut/fzf-mru.vim', {'depends': 'fzf'})
-nmap <C-p> :Files<Cr>
-nmap <C-b> :Buffers<Cr>
-nmap <C-c> :Commits<Cr>
-nmap <C-n> :FZFMru<Cr>
+  " Find (and replace)
+  call dein#add('rking/ag.vim', {'on_cmd': ['Ag']})
+  call dein#add('tpope/vim-abolish', {'on_cmd': ['Abolish', 'Subvert']})
 
-" Find (and replace)
-call dein#add('rking/ag.vim', {'on_cmd': ['Ag']})
-call dein#add('tpope/vim-abolish', {'on_cmd': ['Abolish', 'Subvert']})
+  " Git
+  call dein#add('mattn/webapi-vim')
+  call dein#add('mattn/gist-vim', {'on_cmd': ['Gist'], 'depends': 'webapi-vim'})
+  call dein#add('tpope/vim-fugitive')
+  " Shortcuts
+  map <leader>gd :Gdiff<cr>
+  map <leader>gs :Gstatus<cr>
+  map <leader>gb :Gblame<cr>
+  map <leader>gw! :Gwrite!<cr>
+  " Diffs should be vertically split!
+  set diffopt+=vertical
 
-" Git
-call dein#add('mattn/webapi-vim')
-call dein#add('mattn/gist-vim', {'on_cmd': ['Gist'], 'depends': 'webapi-vim'})
-call dein#add('tpope/vim-fugitive', {'on_cmd': ['Git', 'Gstatus', 'Gwrite', 'Glog', 'Gcommit', 'Gblame', 'Ggrep', 'Gdiff']})
+  " Tmux
+  call dein#add('christoomey/vim-tmux-navigator')
+  call dein#add('tmux-plugins/vim-tmux-focus-events')
 
-" Tmux
-call dein#add('christoomey/vim-tmux-navigator')
-call dein#add('tmux-plugins/vim-tmux-focus-events')
+  " Theme
+  call dein#add('morhetz/gruvbox')
+  set background=dark
+  set t_Co=256
+  colorscheme gruvbox
 
-" Theme
-call dein#add('morhetz/gruvbox')
-set background=dark
-set t_Co=256
-colorscheme gruvbox
+  " Autocomplete
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
+  call dein#add('Shougo/deoplete.nvim', {'depends': ['nvim-yarp', 'vim-hug-neovim-rpc']})
+  let g:deoplete#enable_at_startup = 1
+  call dein#add('Raimondi/delimitMate', {'on_map': { 'i' : ['(', '[', '{', '<']}})
+  let delimitMate_expand_cr = 1
+  let delimitMate_expand_space = 1
 
-" Autocomplete
-call dein#add('Shougo/deoplete.nvim', {'depends': ['nvim-yarp', 'delimitMate']})
-if !has('nvim')
-  call dein#add('roxma/nvim-yarp')
-  call dein#add('roxma/vim-hug-neovim-rpc')
-endif
-let g:deoplete#enable_at_startup = 1
-call dein#add('Raimondi/delimitMate', {'on_map': { 'i' : ['(', '[', '{', '<']}})
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
+  " Actions
+  call dein#add('scrooloose/nerdcommenter')
+  call dein#add('FooSoft/vim-argwrap')
+  " Arguments on new lines
+  map <silent> <leader>a :ArgWrap<CR>
 
-" Actions
-call dein#add('scrooloose/nerdcommenter')
-call dein#add('FooSoft/vim-argwrap')
+  " Allows repeat to be used with some plugins
+  call dein#add('tpope/vim-repeat')
+  " Fixes increment and decrement for dates/times
+  call dein#add('tpope/vim-speeddating', {'on_map': ['<c-a>', '<c-x>']})
 
-" Allows repeat to be used with some plugins
-call dein#add('tpope/vim-repeat')
-" Fixes increment and decrement for dates/times
-call dein#add('tpope/vim-speeddating', {'on_map': ['<c-a>', '<c-x>']})
+  " Motions
+  call dein#add('tpope/vim-surround', {'on_map': {'n': ['cs', 'ds', 'ys'], 'x': 'S'}, 'depends': 'vim-repeat'})
+  call dein#add('easymotion/vim-easymotion')
+  call dein#add('godlygeek/tabular', {'on_cmd': ['Tab', 'Tabularize'] , 'augroup': 'tabular'})
 
-" Motions
-call dein#add('tpope/vim-surround', {'on_map': {'n': ['cs', 'ds', 'ys'], 'x': 'S'}, 'depends': 'vim-repeat'})
-call dein#add('easymotion/vim-easymotion')
-call dein#add('godlygeek/tabular', {'on_cmd': ['Tab', 'Tabularize'] , 'augroup': 'tabular'})
+  " Text objects
+  " Adds function/list/tuple argument object support
+  call dein#add('b4winckler/vim-angry')
+  " Adds a huge number of text objects
+  call dein#add('wellle/targets.vim')
+  " Allows simple selection of text objects (eg. viv)
+  call dein#add('gorkunov/smartpairs.vim')
 
-" Text objects
-" Adds function/list/tuple argument object support
-call dein#add('b4winckler/vim-angry')
-" Adds a huge number of text objects
-call dein#add('wellle/targets.vim')
-" Allows simple selection of text objects (eg. viv)
-call dein#add('gorkunov/smartpairs.vim')
+  " Syntax checking/linting
+  call dein#add('w0rp/ale')
 
-" Syntax checking/linting
-call dein#add('w0rp/ale')
+  " Snippets
+  call dein#add('SirVer/ultisnips')
+  let g:UltiSnipsEditSplit="vertical"
+  let g:UltiSnipsExpandTrigger="<c-k>"
+  let g:UltiSnipsJumpForwardTrigger="<c-l>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+  call dein#add('honza/vim-snippets')
 
-" Snippets
-call dein#add('SirVer/ultisnips')
-let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsJumpForwardTrigger="<c-l>"
-let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-call dein#add('honza/vim-snippets')
+  " Filetypes
+  " Guess indents based on file and containing directory
+  call dein#add('tpope/vim-sleuth')
+  " Respect editorconfig
+  call dein#add('editorconfig/editorconfig-vim')
 
-" Filetypes
-" Guess indents based on file and containing directory
- call dein#add('tpope/vim-sleuth')
+  " Erlang
+  call dein#add('vim-erlang/vim-erlang-tags', {'on_ft': 'erlang'})
+  call dein#add('vim-erlang/vim-erlang-compiler', {'on_ft': 'erlang'})
+  call dein#add('vim-erlang/vim-erlang-omnicomplete', {'on_ft': 'erlang'})
+  call dein#add('vim-erlang/vim-erlang-runtime', {'on_ft': 'erlang'})
+  call dein#add('vim-erlang/erlang-motions.vim', {'on_ft': 'erlang'})
+  call dein#add('vim-erlang/vim-dialyzer', {'on_ft': 'erlang'})
+  call dein#add('vim-erlang/vim-rebar', {'on_ft': 'erlang'})
 
-" Erlang
-call dein#add('vim-erlang/vim-erlang-tags', {'on_ft': 'erlang'})
-call dein#add('vim-erlang/vim-erlang-compiler', {'on_ft': 'erlang'})
-call dein#add('vim-erlang/vim-erlang-omnicomplete', {'on_ft': 'erlang'})
-call dein#add('vim-erlang/vim-erlang-runtime', {'on_ft': 'erlang'})
-call dein#add('vim-erlang/erlang-motions.vim', {'on_ft': 'erlang'})
-call dein#add('vim-erlang/vim-dialyzer', {'on_ft': 'erlang'})
-call dein#add('vim-erlang/vim-rebar', {'on_ft': 'erlang'})
-
-" Traverse the undo/redo tree
-call dein#add('sjl/gundo.vim')
-nnoremap <F3> :GundoToggle<CR>
+  " Traverse the undo/redo tree
+  call dein#add('sjl/gundo.vim')
+  nnoremap <F3> :GundoToggle<CR>
 
 call dein#end()
 
 " Improve startup time
 set guioptions=M
 
+" General
+syntax on
 filetype on
 filetype plugin on
 filetype indent on
-
-syntax on
 set shell=/bin/bash
-
-"Easy ways of getting into normal mode
-inoremap kk <ESC>
-inoremap jj <ESC>
-let mapleader = "\<Space>"
-
-" General
-"Uncomment for mouse support
-"set mouse=a
+" Uncomment for mouse support
+" set mouse=a
 " Fix backspace
 set backspace=indent,eol,start
-"Disable ex mode
+" Disable ex mode
 map q: <Nop>
 nnoremap Q <nop>
 " Increase command history
 set history=200
-"Use ; as :
+" Use ; as :
 nnoremap ; :
-"Removes error message when navigating away from unsaved buffer
+" Removes error message when navigating away from unsaved buffer
 set hidden
-"cd
-map <Leader>cd :cd %:p:h<cr>:pwd<cr>
-"Saving
+" Saving
 nmap <Leader>w :w!<cr>
-"Sudo write
+" Sudo write
 cmap w!! w !sudo tee % >/dev/null
-"Reload file if edits happen somewhere else
+" Reload file if edits happen somewhere else
 set autoread
 "Auto resize panes on terminal resize
 autocmd VimResized * wincmd =
 
-"Terminal setup
+" Terminal setup
 set termencoding=utf-8
 set fileencodings=utf8,cp1251
 set encoding=utf8
-"fixes terminal draw bug in Tmux
+" fixes terminal draw bug in Tmux
 set t_ut=
-"Beeps off, not that I ever use a terminal that does
+" Beeps off, not that I ever use a terminal that does
 set noerrorbells visualbell t_vb=
 if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
 set autoindent
-"Indent entire document
-map <Leader><C-i> mzgg=G'z
 
-"Statusline stuff
-"Display status line always
+" Statusline stuff
+" Display status line always
 set laststatus=2
 set ruler
 set showcmd
-set ch=1
 
-"Ignore some file types
+" Ignore some file types
 set wildmenu                    " Cool cmd completion
 set wildignorecase
-"%% is directory containing current file
+" %% is directory containing current file
 cabbr <expr> %% expand('%:p:h')
 set wildignore+=.hg,.git,.svn   " Version control
 set wildignore+=*.pyc           " Python byte code
@@ -184,55 +182,48 @@ set wildignore+=*.beam           " Erlang byte code
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 set wildignore+=*.class,*.o
 
-"Display whitespace
+" Display whitespace
 set listchars=tab:>.,trail:.
 set list
 
-"Line numbers and limits
+" Line numbers and limits
 set number                      " Show line numbers
 set relativenumber
 set cc=100                       " Ver line in 80 column
 set cursorline
 
-"Folds
-set foldmethod=indent
-set foldcolumn=1
-set foldlevel=99
-
-"Movement
-set scrolloff=8                 " Start scrolling n lines before border
-"Scroll wrapped lines normally
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-"Alternate scrolling
-map j 5j
-map k 5k
-map h 5h
-map l 5l
-"End of line
-inoremap <C-e> <C-o>$
-"Start of line
-inoremap <C-a> <C-o>^
-
 " Search
 set hlsearch                    " Highlight searches
 set incsearch                   " Highlight dynamically as pattern is typed
 set ignorecase                  " Ignore case of searches
-" Search and replace word under curser with F4
-nnoremap <F4> :%s/<c-r><c-w>//g<c-f>$F/i
 " Leader / to clear search highligting
 nmap <Leader>/ :nohlsearch<CR>
 
-"Allows undo after file is closed
+" Allows undo after file is closed
 if exists("&undodir")
     set undofile
     set undodir=/tmp
 endif
-"Swap files and backup are super annoying. I save often
+" Swap files and backup are super annoying. I save often
 set noswapfile
 set nobackup
 
-"Set cursorcolumn
+" Movement
+set scrolloff=8                 " Start scrolling n lines before border
+" Scroll wrapped lines normally
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+" End of line
+inoremap <C-e> <C-o>$
+" Start of line
+inoremap <C-a> <C-o>^
+
+"Easy ways of getting into normal mode
+inoremap kk <ESC>
+inoremap jj <ESC>
+let mapleader = "\<Space>"
+
+" Set cursorcolumn
 nmap <Leader>scc :set cuc<CR>
 nmap <Leader>Scc :set nocuc<CR>
 
@@ -247,138 +238,53 @@ map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 
-"Changlist
+" Changlist
 noremap <silent><Leader>cp :cprev<CR>
 noremap <silent><Leader>cn :cnext<CR>
 
-"Quickfix
+" Quickfix
 noremap <Leader>q :copen<CR>
 noremap <Leader>Q :cclose<CR>
 noremap gn :cn<CR>
 noremap gp :cp<CR>
 
-"Diff
-"Diff
-map <leader>gd :Gdiff<cr>
-map <leader>gs :Gstatus<cr>
-map <leader>gb :Gblame<cr>
-map <leader>gw! :Gwrite!<cr>
-
-"Selection
-noremap gV `[v`]
-map <leader>gd :Gdiff<cr>
-map <leader>gs :Gstatus<cr>
-map <leader>gb :Gblame<cr>
-map <leader>gw! :Gwrite!<cr>
-
-"Selection
-"Select what was pasted
-map <leader>gv `[v`]
-
-"Spelling
-"Pressing ,ss will toggle and untoggle spell checking
+" Spelling
+" Pressing ,ss will toggle and untoggle spell checking
 setlocal spell spelllang=en_gb
 setlocal nospell
 map <leader>ss :setlocal spell!<cr>
-"Next, previous
+" Next, previous
 map <leader>sn ]s
 map <leader>sp [s
-"Add word to spellfile
+" Add word to spellfile
 map <leader>sa zg
-"Suggest spelling
+" Suggest spelling
 map <leader>s? z=
 
-"Delete surrounding function
-nmap <silent> dsf ds)db
-
-"FileTypes
-"web
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,htmldjango setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-autocmd BufEnter *html map <F11> :setfiletype htmldjango<CR>
-autocmd BufEnter *html map <S-F11> :setfiletype django<CR>
-
-"Python
-let python_highlight_all = 1
-"Fix double indentation
-let g:pyindent_open_paren = '&sw'
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType python nnoremap <F5> :w<CR>:!python %<CR>
-autocmd FileType python setlocal complete-=i
-autocmd FileType python setlocal complete-=i
-autocmd FileType python setlocal dictionary=~/.vim/dict/python
-autocmd FileType python setlocal complete+=k
-autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-"Remove trailing whitespace upon saving python file
-autocmd BufWritePre *.py :%s/\s\+$//e
-let g:neomake_python_flake8_maker = { 'args': ['--max-line-length=100', '--ignore=E302'], }
-
-"Add Python virtualenv's site-packages to vim path
-py << EOF
-import os.path
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    virtualenv_dir = os.environ['VIRTUAL_ENV']
-    project_dir    = os.getcwd()
-    sys.path.insert(0, project_dir)
-    activate_this = os.path.join(
-        virtualenv_dir,
-        'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-
-"Make it easier to navigate windows
+" Make it easier to navigate windows
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-"Vimrc stuff
+" Vimrc shortcuts
 nmap <silent> <Leader>ev :tabe $MYVIMRC<CR>
 nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 nmap <silent> <Leader>bi :BundleInstall<CR>
 
-"Newline
+" Newline
 map <Leader>o o<Esc>
 map <Leader>O O<Esc>
 
-"Copy, paste and cut to system clipboard
+" Copy, paste and cut to system clipboard
 map <Leader>y "+y
 map <Leader>x "+d
 map <Leader>p :set paste<CR>"+p:set nopaste<CR>
 map <Leader>P :set paste<CR>"+P:set nopaste<CR>
-"Copy to end of line
+" Copy to end of line
 noremap Y y$
-" Save cursor after yanking in visual mode
-vnoremap y myy`y
-vnoremap Y myY`y
 
-"Arguments on new lines
-map <silent> <leader>a :ArgWrap<CR>
-"Closing bracket on last arg line
-let g:argwrap_wrap_closing_brace = 0
-
-"Tasklist
-map <Leader>td <Plug>TaskList
-
-"Run line in shell
+" Run line in shell
 map <Leader>r :exec '!'.getline('.')<CR>
-"Run line in shell and insert output below
-"TODO
-
-"Camel case motion
-"map <S-W> <Plug>CamelCaseMotion_w
-"map <S-B> <Plug>CamelCaseMotion_b
-"map <S-E> <Plug>CamelCaseMotion_e
-
-"Diffs
-"Diffs should be vertically split!
-set diffopt+=vertical
-set re=1
-
-"Use local config if available
-if filereadable("~/.config/nvim/init.local")
-    so ~/.config/nvim/init.local
-endif
+" Run line in shell and insert output below
+" TODO
