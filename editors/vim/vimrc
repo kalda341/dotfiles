@@ -77,8 +77,8 @@ Plug 'wellle/targets.vim'
 " Allows simple selection of text objects (eg. viv)
 Plug 'gorkunov/smartpairs.vim'
 
-" Syntax checking
-Plug 'neomake/neomake'
+" Syntax checking/linting
+Plug 'w0rp/ale'
 
 " Organisation
 Plug 'jceb/vim-orgmode'
@@ -325,17 +325,6 @@ map <leader>s? z=
 
 "Delete surrounding function
 nmap <silent> dsf ds)db
-
-"Error detection
-autocmd! BufWritePost * Neomake
-let g:neomake_warning_sign = {
-  \ 'text': '*',
-  \ 'texthl': 'WarningMsg',
-  \ }
-let g:neomake_error_sign = {
-  \ 'text': '!',
-  \ 'texthl': 'ErrorMsg',
-  \ }
 
 "FileTypes
 "web
