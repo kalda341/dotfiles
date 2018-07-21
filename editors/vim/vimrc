@@ -1,112 +1,129 @@
 " ~/.config/nvim/init.vim
 " Author: Max Lay
+if &compatible
+ set nocompatible
+endif
 
-syntax on
-set nocompatible
+" Plugins
+" Add the dein installation directory into runtimepath
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+call dein#begin(expand('~/.vim/dein')) " plugins' root path
+
+call dein#add('Shougo/dein.vim')
+
+" File navigation and manipulation
+call dein#add('scrooloose/nerdtree')
+"Nerdtree file browser
+let NERDTreeDirArrows=0
+let NERDTreeShowHidden=1
+nmap <F2> :NERDTreeToggle<CR>
+let NERDTreeIgnore=['\.py[co]$', '\~$']
+
+" More precise, faster matcher than CtrlP
+call dein#add('junegunn/fzf', {'build': './install --all', 'merged': 0})
+call dein#add('junegunn/fzf.vim', {'depends': 'fzf'})
+call dein#add('pbogut/fzf-mru.vim', {'depends': 'fzf'})
+nmap <C-p> :Files<Cr>
+nmap <C-b> :Buffers<Cr>
+nmap <C-c> :Commits<Cr>
+nmap <C-n> :FZFMru<Cr>
+
+" Find (and replace)
+call dein#add('rking/ag.vim', {'on_cmd': ['Ag']})
+call dein#add('tpope/vim-abolish', {'on_cmd': ['Abolish', 'Subvert']})
+
+" Git
+call dein#add('mattn/webapi-vim')
+call dein#add('mattn/gist-vim', {'on_cmd': ['Gist'], 'depends': 'webapi-vim'})
+call dein#add('tpope/vim-fugitive', {'on_cmd': ['Git', 'Gstatus', 'Gwrite', 'Glog', 'Gcommit', 'Gblame', 'Ggrep', 'Gdiff']})
+
+" Tmux
+call dein#add('christoomey/vim-tmux-navigator')
+call dein#add('tmux-plugins/vim-tmux-focus-events')
+
+" Theme
+call dein#add('morhetz/gruvbox')
+set background=dark
+set t_Co=256
+colorscheme gruvbox
+
+" Autocomplete
+call dein#add('Shougo/deoplete.nvim', {'depends': ['nvim-yarp', 'delimitMate']})
+if !has('nvim')
+  call dein#add('roxma/nvim-yarp')
+  call dein#add('roxma/vim-hug-neovim-rpc')
+endif
+let g:deoplete#enable_at_startup = 1
+call dein#add('Raimondi/delimitMate', {'on_map': { 'i' : ['(', '[', '{', '<']}})
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+
+" Actions
+call dein#add('scrooloose/nerdcommenter')
+call dein#add('FooSoft/vim-argwrap')
+
+" Allows repeat to be used with some plugins
+call dein#add('tpope/vim-repeat')
+" Fixes increment and decrement for dates/times
+call dein#add('tpope/vim-speeddating', {'on_map': ['<c-a>', '<c-x>']})
+
+" Motions
+call dein#add('tpope/vim-surround', {'on_map': {'n': ['cs', 'ds', 'ys'], 'x': 'S'}, 'depends': 'vim-repeat'})
+call dein#add('easymotion/vim-easymotion')
+call dein#add('godlygeek/tabular', {'on_cmd': ['Tab', 'Tabularize'] , 'augroup': 'tabular'})
+
+" Text objects
+" Adds function/list/tuple argument object support
+call dein#add('b4winckler/vim-angry')
+" Adds a huge number of text objects
+call dein#add('wellle/targets.vim')
+" Allows simple selection of text objects (eg. viv)
+call dein#add('gorkunov/smartpairs.vim')
+
+" Syntax checking/linting
+call dein#add('w0rp/ale')
+
+" Snippets
+call dein#add('SirVer/ultisnips')
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsExpandTrigger="<c-k>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+call dein#add('honza/vim-snippets')
+
+" Filetypes
+" Guess indents based on file and containing directory
+ call dein#add('tpope/vim-sleuth')
+
+" Erlang
+call dein#add('vim-erlang/vim-erlang-tags', {'on_ft': 'erlang'})
+call dein#add('vim-erlang/vim-erlang-compiler', {'on_ft': 'erlang'})
+call dein#add('vim-erlang/vim-erlang-omnicomplete', {'on_ft': 'erlang'})
+call dein#add('vim-erlang/vim-erlang-runtime', {'on_ft': 'erlang'})
+call dein#add('vim-erlang/erlang-motions.vim', {'on_ft': 'erlang'})
+call dein#add('vim-erlang/vim-dialyzer', {'on_ft': 'erlang'})
+call dein#add('vim-erlang/vim-rebar', {'on_ft': 'erlang'})
+
+" Traverse the undo/redo tree
+call dein#add('sjl/gundo.vim')
+nnoremap <F3> :GundoToggle<CR>
+
+call dein#end()
+
+" Improve startup time
+set guioptions=M
 
 filetype on
 filetype plugin on
 filetype indent on
 
+syntax on
 set shell=/bin/bash
 
 "Easy ways of getting into normal mode
 inoremap kk <ESC>
 inoremap jj <ESC>
 let mapleader = "\<Space>"
-
-" Load vim-plug
-if empty(glob("~/.config/nvim/autoload/plug.vim"))
-    execute '!mkdir -p ~/.config/nvim/autoload'
-    execute '!curl -fLo ~/.config/nvim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
-endif
-
-call plug#begin()
-" File navigation and manipulation
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-" More precise, faster matcher than CtrlP
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'pbogut/fzf-mru.vim'
-"
-Plug 'tpope/vim-eunuch'
-" Find (and replace)
-Plug 'rking/ag.vim'
-Plug 'tpope/vim-abolish'
-" Git
-Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim', { 'on': 'Gist' }
-Plug 'tpope/vim-fugitive'
-" Tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
-" Fixes focus events with Tmux
-Plug 'tmux-plugins/vim-tmux-focus-events'
-
-" Theme
-Plug 'morhetz/gruvbox'
-
-" Autocomplete
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'Raimondi/delimitMate'
-
-" Actions
-Plug 'scrooloose/nerdcommenter'
-Plug 'FooSoft/vim-argwrap'
-" Allows repeat to be used with some plugins
-Plug 'tpope/vim-repeat'
-" Fixes increment and decrement for dates/times
-Plug 'tpope/vim-speeddating'
-"For swapping positions of text objects
-Plug 'tommcdo/vim-exchange'
-
-" Motions
-Plug 'tpope/vim-surround'
-Plug 'easymotion/vim-easymotion'
-Plug 'godlygeek/tabular'
-""Handy plugin for moving through camel case words
-"Plug 'camelcasemotion'
-
-" Text objects
-" Allows user defined text objects
-" Plug 'kana/vim-textobj-user'
-Plug 'b4winckler/vim-angry'
-Plug 'wellle/targets.vim'
-" Allows simple selection of text objects (eg. viv)
-Plug 'gorkunov/smartpairs.vim'
-
-" Syntax checking/linting
-Plug 'w0rp/ale'
-
-" Organisation
-Plug 'jceb/vim-orgmode'
-
-" Erlang
-Plug 'vim-erlang/vim-erlang-tags', { 'for': 'erlang' }
-Plug 'vim-erlang/vim-erlang-compiler', { 'for': 'erlang' }
-Plug 'vim-erlang/vim-erlang-omnicomplete', { 'for': 'erlang' }
-Plug 'vim-erlang/vim-erlang-runtime', { 'for': 'erlang' }
-Plug 'vim-erlang/erlang-motions.vim', { 'for': 'erlang' }
-Plug 'vim-erlang/vim-dialyzer', { 'for': 'erlang' }
-Plug 'vim-erlang/vim-rebar', { 'for': 'erlang' }
-
-" JS
-"Autofix JS with ESLint
-Plug 'ruanyl/vim-fixmyjs'
-
-" Misc
-" Guess indents based on file and containing directory
- Plug 'tpope/vim-sleuth'
-"Traverse the undo/redo tree
-Plug 'sjl/gundo.vim'
-"ReplaceWithRegister
-Plug 'vim-scripts/ReplaceWithRegister'
-"Ultisnips
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-call plug#end()
 
 " General
 "Uncomment for mouse support
@@ -145,35 +162,6 @@ if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
-" Indentation
-function UseTabs(...)
-    if a:0 > 0
-       let width = a:1
-    else
-       let width = 4
-    end
-    set noexpandtab
-    let &tabstop=width
-endfunction
-command UseTabs call UseTabs()
-
-function UseSpaces(...)
-    if a:0 > 0
-       let width = a:1
-    else
-       let width = 4
-    end
-    let &softtabstop=width
-    let &shiftwidth=width
-    set expandtab
-endfunction
-command UseSpaces call UseSpaces()
-" Commented out because Vim Sleuth should figure it out automatically
-"set softtabstop=4
-"set shiftwidth=4
-"set expandtab
-"set smarttab
-set autoindent
 set autoindent
 "Indent entire document
 map <Leader><C-i> mzgg=G'z
@@ -235,12 +223,6 @@ nnoremap <F4> :%s/<c-r><c-w>//g<c-f>$F/i
 " Leader / to clear search highligting
 nmap <Leader>/ :nohlsearch<CR>
 
-" Fuzzy find
-nmap <C-p> :Files<Cr>
-nmap <C-b> :Buffers<Cr>
-nmap <C-c> :Commits<Cr>
-nmap <C-n> :FZFMru<Cr>
-
 "Allows undo after file is closed
 if exists("&undodir")
     set undofile
@@ -249,23 +231,6 @@ endif
 "Swap files and backup are super annoying. I save often
 set noswapfile
 set nobackup
-
-"Theme
-set background=dark
-set t_Co=256
-colorscheme gruvbox
-
-"Nerdtree file browser
-let NERDTreeDirArrows=0
-let NERDTreeShowHidden=1
-nmap <F2> :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\.py[co]$', '\~$']
-
-"Gundo
-nnoremap <F3> :GundoToggle<CR>
-
-"Tagbar
-nmap <Leader>t :TagbarToggle<CR>
 
 "Set cursorcolumn
 nmap <Leader>scc :set cuc<CR>
@@ -408,40 +373,10 @@ map <Leader>r :exec '!'.getline('.')<CR>
 "map <S-B> <Plug>CamelCaseMotion_b
 "map <S-E> <Plug>CamelCaseMotion_e
 
-"Significantly improve performance using The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-
-"Delimitmate
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
-
 "Diffs
 "Diffs should be vertically split!
 set diffopt+=vertical
 set re=1
-
-"Autocompletion
-let g:deoplete#enable_at_startup = 1
-
-"Ultisnips Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsJumpForwardTrigger="<c-l>"
-let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-"Repeat motion
-let repmo_key=","
-let repmo_revkey="\\"
 
 "Use local config if available
 if filereadable("~/.config/nvim/init.local")
