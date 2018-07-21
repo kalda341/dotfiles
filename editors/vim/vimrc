@@ -4,6 +4,8 @@ if &compatible
   set nocompatible
 endif
 
+let mapleader = "\<Space>"
+
 " Plugins
 " Add the dein installation directory into runtimepath
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
@@ -221,7 +223,6 @@ inoremap <C-a> <C-o>^
 "Easy ways of getting into normal mode
 inoremap kk <ESC>
 inoremap jj <ESC>
-let mapleader = "\<Space>"
 
 " Set cursorcolumn
 nmap <Leader>scc :set cuc<CR>
