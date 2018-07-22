@@ -99,7 +99,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   call dein#add('w0rp/ale')
   let b:ale_linters = [
   \ 'flake8', 'pylint',
-  \ 'eslint'
+  \ 'eslint',
+  \ 'ember-template-lint'
   \ ]
   let g:ale_sign_column_always = 1
   let g:ale_sign_error = '✘'
@@ -127,6 +128,10 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   call dein#add('vim-erlang/erlang-motions.vim', {'on_ft': 'erlang'})
   call dein#add('vim-erlang/vim-dialyzer', {'on_ft': 'erlang'})
   call dein#add('vim-erlang/vim-rebar', {'on_ft': 'erlang'})
+
+  " Ember
+  " We can't load on_ft, because the plugin defines the filetype
+  call dein#add('joukevandermaas/vim-ember-hbs')
 
   " Traverse the undo/redo tree
   call dein#add('sjl/gundo.vim')
