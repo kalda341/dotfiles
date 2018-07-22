@@ -31,7 +31,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit'}
+  \ 'ctrl-v': 'vsplit'
+  \ }
 
   " Find (and replace)
   call dein#add('rking/ag.vim', {'on_cmd': ['Ag']})
@@ -96,7 +97,13 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
 
   " Syntax checking/linting
   call dein#add('w0rp/ale')
-  let b:ale_linters = ['flake8', 'pylint']
+  let b:ale_linters = [
+  \ 'flake8', 'pylint',
+  \ 'eslint'
+  \ ]
+  let g:ale_sign_column_always = 1
+  let g:ale_sign_error = '✘'
+  let g:ale_sign_warning = '!'
 
   " Snippets
   call dein#add('SirVer/ultisnips')
