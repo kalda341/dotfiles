@@ -14,11 +14,24 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
 
   " File navigation and manipulation
   call dein#add('scrooloose/nerdtree')
-  "Nerdtree file browser
+  " Nerdtree file browser
   let NERDTreeDirArrows=0
   let NERDTreeShowHidden=1
   nmap <F2> :NERDTreeToggle<CR>
   let NERDTreeIgnore=['\.py[co]$', '\~$']
+  " Git integration
+  call dein#add('Xuyuanp/nerdtree-git-plugin')
+  let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "●",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "-",
+    \ "Renamed"   : "r",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
 
   " More precise, faster matcher than CtrlP
   call dein#add('junegunn/fzf', {'build': './install --all', 'merged': 0})
