@@ -100,7 +100,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   let b:ale_linters = [
   \ 'flake8', 'pylint',
   \ 'eslint',
-  \ 'ember-template-lint'
+  \ 'ember-template-lint',
+  \ 'stylelint'
   \ ]
   let g:ale_sign_column_always = 1
   let g:ale_sign_error = '✘'
