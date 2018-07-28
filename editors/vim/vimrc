@@ -197,6 +197,8 @@ if has('autocmd')
 endif
 
 set autoindent
+" Jump to nearest indentation
+set shiftround
 
 " Statusline stuff
 " Display status line always
