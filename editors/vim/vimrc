@@ -41,6 +41,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   nmap <C-b> :Buffers<Cr>
   nmap <C-c> :Commits<Cr>
   nmap <C-n> :FZFMru<Cr>
+  " Respect .gitignore
+  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
   let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
