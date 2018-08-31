@@ -54,9 +54,6 @@ cpu_avg_samples 2
 
 default_color FF0000
 
-mpd_host nas
-mpd_port 6600
-
 ## Sensors examples
 # Top Process: ${top name 1}
 # Root: {fs_used /}/${fs_size /} /home ${fs_free /home} /${fs_size /home}
@@ -92,7 +89,7 @@ mpd_port 6600
 #V ${exec exec amixer get Headphone -M | grep -oEm 1 "[[:digit:]]*%"}
 
 TEXT
-[{ "full_text" : "   MPD: ${mpd_title}-${mpd_artist} ${mpd_elapsed}/${mpd_length} " , "color" : "\#d68176"  },\
+[{ "full_text" : "   ${exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py current} " , "color" : "\#d68176"  },\
 {"full_text": " Up ${upspeed enp2s0} ", "color":"\#ff0000"},\
 {"full_text": " Down ${downspeed enp2s0} ", "color":"\#00fff2"},\
 { "full_text" : " Disk ${fs_free /home} " , "color" : "\#ffffff"},\

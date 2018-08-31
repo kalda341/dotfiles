@@ -4,7 +4,6 @@
 
 set $mod Mod4
 
-#gaps-next features
 gaps inner 12
 gaps outer 8
 
@@ -17,76 +16,70 @@ floating_modifier $mod
 
 bindsym $mod+Escape exec xkill
 
-#Set terminal
+# Set terminal
 set $term urxvt -e /bin/zsh
 
-# start a terminal
+# Start a terminal
 bindsym $mod+Return exec $term
 
-#Start browser
+# Start browser
 bindsym $mod+b exec google-chrome-stable
 bindsym $mod+Shift+b exec google-chrome-stable --incognito
 
-#Start file manager
+# Start file manager
 bindsym $mod+p exec urxvt -e "ranger"
 
-# Make the currently focused window a scratchpad
-bindsym $mod+Shift+minus move scratchpad
-# Show the first scratchpad window
-bindsym $mod+minus scratchpad show
-## Show the sup-mail scratchpad window, if any.
-#bindsym mod4+s [title="^Sup ::"] scratchpad show
-# kill focused window
+# Kill focused window
 bindsym $mod+Shift+q kill
 
 set $ROFICONF -bg "#282828" -fg "#ebdbb2" -font "Iosevka Regular 12" -hide-scrollbar
 
-# start launcher
+# Start launcher
 bindsym $mod+d exec rofi -show run $ROFICONF
-# jump to window
+# Jump to window
 bindsym $mod+x exec rofi -show window $ROFICONF
-# open ssh picker
+# Open ssh picker
 bindsym $mod+Shift+s exec rofi -terminal urxvt -show ssh -ssh-client sshrc $ROFICONF
 
-# change focus
+# Change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# move focused window
+# Move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# split in horizontal orientation
+# Split in horizontal orientation
 bindsym $mod+v split h
 
-# split in vertical orientation
+# Split in vertical orientation
 bindsym $mod+s split v
 
-# enter fullscreen mode for the focused container
+# Enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# change container layout (stacked, tabbed, toggle split)
+# Change container layout (stacked, tabbed, toggle split)
 bindsym $mod+q layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
-# toggle tiling / floating
+# Toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
-# change focus between tiling / floating windows
+# Change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-# focus the parent container
+# Focus the parent container
 bindsym $mod+Shift+p focus parent
 
-# focus the child container
+# Focus the child container
 bindsym $mod+Shift+c focus child
 
-# switch to workspace
+# Switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -98,7 +91,7 @@ bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
-# move focused container to workspace
+# Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
 bindsym $mod+Shift+3 move container to workspace 3
@@ -110,25 +103,20 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
+# Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
+# Resize window (you can also use the mouse for that)
 mode "resize" {
-# These bindings trigger as soon as you enter the resize mode
-
-# Pressing left will shrink the window’s width.
-# Pressing right will grow the window’s width.
-# Pressing up will shrink the window’s height.
-# Pressing down will grow the window’s height.
+    # These bindings trigger as soon as you enter the resize mode
     bindsym h resize shrink width 10 px or 10 ppt
     bindsym j resize grow height 10 px or 10 ppt
     bindsym k resize shrink height 10 px or 10 ppt
     bindsym l resize grow width 10 px or 10 ppt
 
-# back to normal: Enter or Escape
+    # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -154,14 +142,13 @@ for_window [title="Copying"] floating enable
 for_window [title="Deleting"] floating enable
 for_window [title="Moving"] floating enable
 
-#Desktop bacrground
+# Desktop bacrground
 exec --no-startup-id nitrogen --restore
 
-#Xflux
+# Xflux
 exec --no-startup-id xflux -l -36.8484597 -g 174.76333150000005 -r
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
     status_command bash $HOME/.i3/statusline
     position top
@@ -178,20 +165,8 @@ bar {
     }
 }
 
-exec $term -e ncmpcpp
-for_window [class="URxvt" title="ncmpcpp"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
-bindsym $mod+c [class="URxvt" title="ncmpcpp"] scratchpad show
-
-#Scratchpad terminal
-exec --no-startup-id tmux new scratchpad
-exec $term -title scratchpad-terminal
-for_window [title="scratchpad-terminal"] floating enable, move scratchpad, scratchpad hide, resize grow width 400 px, resize grow height 400 px;
-bindsym $mod+a [title="scratchpad-terminal"] scratchpad show
-
-#Notifications
+# Notifications
 exec --no-startup-id dunst -config ~/.i3/dunstrc
-#Mpd notifications
-exec --no-startup-id ~/.i3/scripts/mpd-notify.py
 
 bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' $ROFICONF | ~/.i3/scripts/rename_workspace.py
 
@@ -199,47 +174,36 @@ bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jum
 bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " $ROFICONF | (~/.i3/scripts/move_to_workspace.py)'
 bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " $ROFICONF | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
 
-bindsym $mod+Shift+y move workspace to output left
-
-bindsym $mod+Left exec $control prev go
-bindsym $mod+Right exec $control next go
-bindsym $mod+Up exec $control up go
-bindsym $mod+Down exec $control down go
-
-# move workspace between outputs
+# Move workspace between outputs
 bindsym $mod+Shift+Left move workspace to output left
 bindsym $mod+Shift+Right move workspace to output right
 bindsym $mod+Shift+Up move workspace to output up
 bindsym $mod+Shift+Down move workspace to output down
 
-bindsym $mod+m exec ~/.screenlayout/two.sh && nitrogen --restore
-bindsym $mod+shift+m exec ~/.screenlayout/one.sh && nitrogen --restore
-
-#Marks
+# Marks
 bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " $ROFICONF | ~/.i3/scripts/jump_to_mark.sh'
 bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " $ROFICONF | ~/.i3/scripts/mark_window.sh'
 
-#lock
-set $lock i3lock -c 000000 -d
-bindsym F9 exec $lock
-exec --no-startup-id xautolock -time 5 -locker $lock &
+# Sonos / Audio
+bindsym F5 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py play
+bindsym F6 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py pause
+bindsym F7 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py previous
+bindsym F8 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py next
 
-#mpc
-set $MPCHOST "localhost"
-bindsym F5 exec mpc --host $MPCHOST play
-bindsym F6 exec mpc --host $MPCHOST pause
-bindsym F7 exec mpc --host $MPCHOST prev
-bindsym F8 exec mpc --host $MPCHOST next
+# Lock
+bindsym F9 exec i3lock
 
-bindsym Shift+F11 exec mpc --host $MPCHOST volume -5
-bindsym Shift+F12 exec mpc --host $MPCHOST volume +5
-
+# Sonos / Audio
 bindsym F10 exec ponymix toggle
 bindsym F11 exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
 bindsym F12 exec ponymix increase 5 && ~/.i3/scripts/notify-volume.sh
 
-#Thinkpad keys
-# pulse audio volume control
+bindsym Shift+F10 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py volume 0
+bindsym Shift+F11 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py volume -5
+bindsym Shift+F12 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py volume +5
+
+# Thinkpad keys
+# Pulse audio volume control
 bindsym XF86AudioLowerVolume exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
 bindsym XF86AudioRaiseVolume exec ponymix increase 5 && ~/.i3/scripts/notify-volume.sh
 bindsym XF86AudioMute exec ponymix toggle & ~/.i3/scripts/notify-volume.sh
@@ -248,3 +212,11 @@ bindsym XF86AudioMute exec ponymix toggle & ~/.i3/scripts/notify-volume.sh
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
 
+# Screenshots
+# Full screen
+bindsym Print exec scrot ~/screenshot.png
+# Current window
+bindsym Shift+Print exec scrot -u ~/screenshot.png
+
+# Compositing manager
+exec --no-startup-id compton
