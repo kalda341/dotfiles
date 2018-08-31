@@ -3,12 +3,12 @@ URxvt.geometry: 250x45 ! make tput bold actually be bold font, not just differen
 URxvt.intensityStyles: false
 URxvt.urgentOnBell: true
 URxvt.saveLines: 1000
-URxvt*font: xft:iosevka-regular:antialias=true:hinting=true
+URxvt*font: xft:iosevka-regular:antialias=true:hinting=true:size=12
 
 !URxvt.font: xft:Source Code Pro Medium:pixelsize=9
 !URxvt.font: xft:DejaVu Sans Mono:size=10
 !URxvt.boldFont: xft:DejaVu Sans Mono:bold:size=10
-URxvt.perl-ext-common: default,vtwheel,clipboard,keyboard-select,url-select
+URxvt.perl-ext-common: default,vtwheel,clipboard,keyboard-select,url-select,resize-font
 ! browser
 URxvt.url-launcher: /usr/bin/chromium
 URxvt.matcher.button: 1
@@ -71,12 +71,9 @@ urxvt*color14: #8ec07c
 urxvt*color7: #a89984
 urxvt*color15: #ebdbb2
 
-
 !! Font sizes
-URxvt.keysym.C-Up:     perl:font-size:increase
-URxvt.keysym.C-Down:   perl:font-size:decrease
-URxvt.keysym.C-S-Up:   perl:font-size:incglobal
-URxvt.keysym.C-S-Down: perl:font-size:decglobal
+URxvt.keysym.C-Down:  resize-font:smaller
+URxvt.keysym.C-Up:    resize-font:bigger
 
 !! Transperency
 !urxvt*transparent: true
