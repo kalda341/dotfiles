@@ -29,6 +29,10 @@ bindsym $mod+Shift+b exec google-chrome-stable --incognito
 # Start file manager
 bindsym $mod+p exec urxvt -e "ranger"
 
+# Utilities
+bindsym $mod+a exec pavucontrol
+bindsym $mod+Shift+a exec arandr
+
 # Kill focused window
 bindsym $mod+Shift+q kill
 
