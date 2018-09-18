@@ -88,6 +88,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
 
   " Actions
   call dein#add('scrooloose/nerdcommenter')
+  let NERDSpaceDelims=1
+
   call dein#add('FooSoft/vim-argwrap')
   " Arguments on new lines
   map <silent> <leader>a :ArgWrap<CR>
