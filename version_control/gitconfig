@@ -9,6 +9,8 @@
     user = kalda341
 [diff]
     tool = vimdiff
+    # Works better than myers
+    algorithm = patience
 [difftool]
     prompt = false
 [core]
