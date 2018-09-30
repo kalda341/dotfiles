@@ -36,14 +36,14 @@ bindsym $mod+Shift+a exec arandr
 # Kill focused window
 bindsym $mod+Shift+q kill
 
-set $ROFICONF -bg "#282828" -fg "#ebdbb2" -font "Iosevka Regular 12" -hide-scrollbar
-
 # Start launcher
-bindsym $mod+d exec rofi -show run $ROFICONF
+bindsym $mod+d exec rofi -show drun
+# Root launcher
+bindsym $mod+Shift+d exec rofi -show drun -run-command 'gksudo {cmd}'
 # Jump to window
-bindsym $mod+x exec rofi -show window $ROFICONF
+bindsym $mod+x exec rofi -show window
 # Open ssh picker
-bindsym $mod+Shift+s exec rofi -terminal urxvt -show ssh -ssh-client sshrc $ROFICONF
+bindsym $mod+Shift+s exec rofi -terminal urxvt -show ssh -ssh-client sshrc
 
 # Change focus
 bindsym $mod+h focus left
@@ -172,11 +172,11 @@ bar {
 # Notifications
 exec --no-startup-id dunst -config ~/.i3/dunstrc
 
-bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' $ROFICONF | ~/.i3/scripts/rename_workspace.py
+bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' | ~/.i3/scripts/rename_workspace.py
 
-bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jump to workspace: " $ROFICONF | ~/.i3/scripts/go_to_workspace.py
-bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " $ROFICONF | (~/.i3/scripts/move_to_workspace.py)'
-bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " $ROFICONF | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
+bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jump to workspace: " | ~/.i3/scripts/go_to_workspace.py
+bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " | (~/.i3/scripts/move_to_workspace.py)'
+bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
 
 # Move workspace between outputs
 bindsym $mod+Shift+Left move workspace to output left
@@ -185,8 +185,8 @@ bindsym $mod+Shift+Up move workspace to output up
 bindsym $mod+Shift+Down move workspace to output down
 
 # Marks
-bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " $ROFICONF | ~/.i3/scripts/jump_to_mark.sh'
-bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " $ROFICONF | ~/.i3/scripts/mark_window.sh'
+bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " | ~/.i3/scripts/jump_to_mark.sh'
+bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " | ~/.i3/scripts/mark_window.sh'
 
 # Sonos / Audio
 bindsym F5 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py play
