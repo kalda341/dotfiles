@@ -197,6 +197,8 @@ bindsym F8 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py next
 # Lock
 bindsym F9 exec i3lock
 
+bindsym Pause exec systemctl suspend
+
 # Sonos / Audio
 bindsym F10 exec ponymix toggle
 bindsym F11 exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
