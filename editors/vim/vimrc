@@ -50,7 +50,14 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   \ }
 
   " Find (and replace)
-  call dein#add('rking/ag.vim', {'on_cmd': ['Ag']})
+  " Ag.vim deprecated. Moving to ack
+  call dein#add('mileszs/ack.vim')
+  if executable('ag')
+    let g:ackprg = 'ag --vimgrep --smart-case'
+  endif
+  cnoreabbrev Ag Ack!
+  cnoreabbrev Ack Ack!
+
   call dein#add('tpope/vim-abolish', {'on_cmd': ['Abolish', 'Subvert']})
 
   " Git
