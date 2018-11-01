@@ -9,7 +9,11 @@ if __name__ == '__main__':
         getattr(device, sys.argv[1])()
     elif sys.argv[1] == 'current':
         track = device.get_current_track_info()
-        print('{} - {} - {} ({}%)'.format(track['title'], track['artist'], track['position'], device.volume))
+        resp = '{} - {} - {} ({}%)'.format(track['title'], track['artist'], track['position'], device.volume)
+        if len(sys.argv) >= 3 and sys.argv[2] == '--escape':
+            print(resp.replace('"', '\\"'))
+        else:
+            print(resp)
     elif sys.argv[1] == 'volume':
         if sys.argv[2].startswith('+') or sys.argv[2].startswith('-'):
             device.volume += int(sys.argv[2])
