@@ -122,8 +122,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   " Syntax checking/linting
   call dein#add('w0rp/ale')
   let b:ale_linters = [
-  \ 'flake8', 'pylint',
-  \ 'eslint',
+  \ 'prospector',
+  \ 'eslint', 'typescript',
   \ 'ember-template-lint',
   \ 'stylelint'
   \ ]
@@ -157,6 +157,9 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   " Ember
   " We can't load on_ft, because the plugin defines the filetype
   call dein#add('joukevandermaas/vim-ember-hbs')
+
+  " Typescript
+  call dein#add('leafgarland/typescript-vim')
 
   " Traverse the undo/redo tree
   call dein#add('sjl/gundo.vim')
