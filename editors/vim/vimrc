@@ -195,6 +195,8 @@ syntax on
 filetype on
 filetype plugin on
 filetype indent on
+" Disable safe write to fix autoreload with Parcel
+set backupcopy=yes
 set shell=/bin/bash
 " Uncomment for mouse support
 " set mouse=a
