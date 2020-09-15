@@ -7,22 +7,26 @@ endif
 let mapleader = "\<Space>"
 
 " Plugins
-" Add the dein installation directory into runtimepath
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-call dein#begin(expand('~/.vim/dein')) " plugins' root path
-  call dein#add('Shougo/dein.vim')
-  call dein#add('wsdjeg/dein-ui.vim')
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+  Plug 'Shougo/dein.vim'
+  Plug 'wsdjeg/dein-ui.vim'
 
   " File navigation and manipulation
-  call dein#add('scrooloose/nerdtree')
+  Plug 'scrooloose/nerdtree'
   " Nerdtree file browser
   let NERDTreeDirArrows=0
   let NERDTreeShowHidden=1
   nmap <F2> :NERDTreeToggle<CR>
   let NERDTreeIgnore=['\.py[co]$', '\~$']
   " Git integration
-  call dein#add('Xuyuanp/nerdtree-git-plugin')
-  let g:NERDTreeIndicatorMapCustom = {
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+  let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "●",
     \ "Staged"    : "✚",
     \ "Untracked" : "-",
@@ -35,9 +39,9 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
     \ }
 
   " More precise, faster matcher than CtrlP
-  call dein#add('junegunn/fzf', {'build': './install --all', 'merged': 0})
-  call dein#add('junegunn/fzf.vim', {'depends': 'fzf'})
-  call dein#add('pbogut/fzf-mru.vim', {'depends': 'fzf'})
+  Plug 'junegunn/fzf', {'do': './install --all', 'merged': 0}
+  Plug 'junegunn/fzf.vim'
+  Plug 'pbogut/fzf-mru.vim'
   nmap <C-p> :Files<Cr>
   nmap <C-b> :Buffers<Cr>
   nmap <C-c> :Commits<Cr>
@@ -52,19 +56,19 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
 
   " Find (and replace)
   " Ag.vim deprecated. Moving to ack
-  call dein#add('mileszs/ack.vim')
+  Plug 'mileszs/ack.vim'
   if executable('ag')
     let g:ackprg = 'ag --vimgrep --smart-case'
   endif
   cnoreabbrev Ag Ack!
   cnoreabbrev Ack Ack!
 
-  call dein#add('tpope/vim-abolish', {'on_cmd': ['Abolish', 'Subvert']})
+  Plug 'tpope/vim-abolish', {'on': ['Abolish', 'Subvert']}
 
   " Git
-  call dein#add('mattn/webapi-vim')
-  call dein#add('mattn/gist-vim', {'on_cmd': ['Gist'], 'depends': 'webapi-vim'})
-  call dein#add('tpope/vim-fugitive')
+  Plug 'mattn/webapi-vim'
+  Plug 'mattn/gist-vim', {'on': 'Gist'}
+  Plug 'tpope/vim-fugitive'
   " Shortcuts
   map <leader>gd :Gdiff<cr>
   map <leader>gs :Gstatus<cr>
@@ -74,13 +78,13 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   set diffopt+=vertical
 
   " Theme
-  call dein#add('morhetz/gruvbox')
+  Plug 'morhetz/gruvbox'
   set background=dark
   set t_Co=256
-  colorscheme gruvbox
+  autocmd vimenter * colorscheme gruvbox
 
   " Autocomplete
-  call dein#add('natebosch/vim-lsc')
+  Plug 'natebosch/vim-lsc'
   let g:lsc_server_commands = {
   \  'javascript': {
   \    'command': 'typescript-language-server --stdio',
@@ -114,32 +118,8 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   let g:lsc_trace_level          = 'off'
   set completeopt=preview,menu,menuone,noinsert,noselect
 
-  call dein#add('Raimondi/delimitMate', {'on_map': { 'i' : ['(', '[', '{', '<']}})
-  let delimitMate_expand_cr = 1
-  let delimitMate_expand_space = 1
-
-  " Actions
-  call dein#add('scrooloose/nerdcommenter')
-  let NERDSpaceDelims=1
-
-  call dein#add('FooSoft/vim-argwrap')
-  " Arguments on new lines
-  map <silent> <leader>a :ArgWrap<CR>
-
-  " Fixes increment and decrement for dates/times
-  call dein#add('tpope/vim-speeddating', {'on_map': ['<c-a>', '<c-x>']})
-
-  " Motions
-  call dein#add('tpope/vim-surround', {'on_map': {'n': ['cs', 'ds', 'ys'], 'x': 'S'}, 'depends': 'vim-repeat'})
-
-  " Text objects
-  " Adds a huge number of text objects
-  call dein#add('wellle/targets.vim')
-  " Allows simple selection of text objects (eg. viv)
-  call dein#add('gorkunov/smartpairs.vim')
-
   " Syntax checking/linting
-  call dein#add('w0rp/ale')
+  Plug 'w0rp/ale'
   let b:ale_linters = [
   \ 'prospector',
   \ 'eslint', 'typescript',
@@ -150,17 +130,43 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   let g:ale_sign_error = '✘'
   let g:ale_sign_warning = '!'
 
+  " Language support
+  Plug 'sheerun/vim-polyglot'
+
+  Plug 'Raimondi/delimitMate'
+  let delimitMate_expand_cr = 1
+  let delimitMate_expand_space = 1
+
+  " Actions
+  Plug 'scrooloose/nerdcommenter'
+  let NERDSpaceDelims=1
+
+  Plug 'FooSoft/vim-argwrap'
+  " Arguments on new lines
+  map <silent> <leader>a :ArgWrap<CR>
+
+  " Fixes increment and decrement for dates/times
+  Plug 'tpope/vim-speeddating'
+
+  " Motions
+  Plug 'tpope/vim-surround'
+
+  " Text objects
+  " Adds a huge number of text objects
+  Plug 'wellle/targets.vim'
+  " Allows simple selection of text objects (eg. viv)
+  Plug 'gorkunov/smartpairs.vim'
+
   " Filetypes
   " Guess indents based on file and containing directory
-  call dein#add('tpope/vim-sleuth')
+  Plug 'tpope/vim-sleuth'
   " Respect editorconfig
-  call dein#add('editorconfig/editorconfig-vim')
+  Plug 'editorconfig/editorconfig-vim'
 
   " Traverse the undo/redo tree
-  call dein#add('sjl/gundo.vim')
+  Plug 'sjl/gundo.vim'
   nnoremap <F3> :GundoToggle<CR>
-
-call dein#end()
+call plug#end()
 
 " Improve startup time
 set guioptions=M
