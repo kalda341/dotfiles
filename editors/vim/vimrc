@@ -69,11 +69,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'mattn/webapi-vim'
   Plug 'mattn/gist-vim', {'on': 'Gist'}
   Plug 'tpope/vim-fugitive'
-  " Shortcuts
-  map <leader>gd :Gdiff<cr>
-  map <leader>gs :Gstatus<cr>
-  map <leader>gb :Gblame<cr>
-  map <leader>gw! :Gwrite!<cr>
   " Diffs should be vertically split!
   set diffopt+=vertical
 
