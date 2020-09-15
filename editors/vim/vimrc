@@ -73,10 +73,6 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   " Diffs should be vertically split!
   set diffopt+=vertical
 
-  " Tmux
-  call dein#add('christoomey/vim-tmux-navigator')
-  call dein#add('tmux-plugins/vim-tmux-focus-events')
-
   " Theme
   call dein#add('morhetz/gruvbox')
   set background=dark
@@ -98,10 +94,19 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   \  }
   \}
   let g:lsc_auto_map = {
-  \  'GoToDefinition': '<C-]>',
-  \  'FindReferences': 'gr',
-  \  'Rename': 'gR',
-  \  'ShowHover': 'K'
+    \ 'GoToDefinition': '<C-]>',
+    \ 'GoToDefinitionSplit': ['<C-W>]', '<C-W><C-]>'],
+    \ 'FindReferences': 'gr',
+    \ 'NextReference': '<C-n>',
+    \ 'PreviousReference': '<C-p>',
+    \ 'FindImplementations': 'gI',
+    \ 'FindCodeActions': 'ga',
+    \ 'Rename': 'gR',
+    \ 'ShowHover': v:true,
+    \ 'DocumentSymbol': 'go',
+    \ 'WorkspaceSymbol': 'gS',
+    \ 'SignatureHelp': 'gm',
+    \ 'Completion': 'completefunc',
   \}
   let g:lsc_enable_autocomplete  = v:true
   let g:lsc_enable_diagnostics   = v:false
@@ -121,19 +126,13 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   " Arguments on new lines
   map <silent> <leader>a :ArgWrap<CR>
 
-  " Allows repeat to be used with some plugins
-  call dein#add('tpope/vim-repeat')
   " Fixes increment and decrement for dates/times
   call dein#add('tpope/vim-speeddating', {'on_map': ['<c-a>', '<c-x>']})
 
   " Motions
   call dein#add('tpope/vim-surround', {'on_map': {'n': ['cs', 'ds', 'ys'], 'x': 'S'}, 'depends': 'vim-repeat'})
-  call dein#add('easymotion/vim-easymotion')
-  call dein#add('godlygeek/tabular', {'on_cmd': ['Tab', 'Tabularize'] , 'augroup': 'tabular'})
 
   " Text objects
-  " Adds function/list/tuple argument object support
-  call dein#add('b4winckler/vim-angry')
   " Adds a huge number of text objects
   call dein#add('wellle/targets.vim')
   " Allows simple selection of text objects (eg. viv)
@@ -151,35 +150,11 @@ call dein#begin(expand('~/.vim/dein')) " plugins' root path
   let g:ale_sign_error = '✘'
   let g:ale_sign_warning = '!'
 
-  " Snippets
-  call dein#add('SirVer/ultisnips')
-  let g:UltiSnipsEditSplit="vertical"
-  let g:UltiSnipsExpandTrigger="<c-k>"
-  let g:UltiSnipsJumpForwardTrigger="<c-l>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-  call dein#add('honza/vim-snippets')
-
   " Filetypes
   " Guess indents based on file and containing directory
   call dein#add('tpope/vim-sleuth')
   " Respect editorconfig
   call dein#add('editorconfig/editorconfig-vim')
-
-  " Erlang
-  call dein#add('vim-erlang/vim-erlang-tags', {'on_ft': 'erlang'})
-  call dein#add('vim-erlang/vim-erlang-compiler', {'on_ft': 'erlang'})
-  call dein#add('vim-erlang/vim-erlang-omnicomplete', {'on_ft': 'erlang'})
-  call dein#add('vim-erlang/vim-erlang-runtime', {'on_ft': 'erlang'})
-  call dein#add('vim-erlang/erlang-motions.vim', {'on_ft': 'erlang'})
-  call dein#add('vim-erlang/vim-dialyzer', {'on_ft': 'erlang'})
-  call dein#add('vim-erlang/vim-rebar', {'on_ft': 'erlang'})
-
-  " Ember
-  " We can't load on_ft, because the plugin defines the filetype
-  call dein#add('joukevandermaas/vim-ember-hbs')
-
-  " Typescript
-  call dein#add('leafgarland/typescript-vim')
 
   " Traverse the undo/redo tree
   call dein#add('sjl/gundo.vim')
@@ -294,39 +269,11 @@ inoremap <C-a> <C-o>^
 inoremap kk <ESC>
 inoremap jj <ESC>
 
-" Set cursorcolumn
-nmap <Leader>scc :set cuc<CR>
-nmap <Leader>Scc :set nocuc<CR>
-
-"Buffers
-noremap <silent><Leader>bp :bprevious<CR>
-noremap <silent><Leader>bn :bnext<CR>
-noremap <silent><Leader>bc :bd<CR>
-
-"Tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-
-" Changlist
-noremap <silent><Leader>cp :cprev<CR>
-noremap <silent><Leader>cn :cnext<CR>
-
-" Quickfix
-noremap <Leader>q :copen<CR>
-noremap <Leader>Q :cclose<CR>
-noremap gn :cn<CR>
-noremap gp :cp<CR>
-
 " Spelling
 " Pressing ,ss will toggle and untoggle spell checking
 setlocal spell spelllang=en_gb
 setlocal nospell
 map <leader>ss :setlocal spell!<cr>
-" Next, previous
-map <leader>sn ]s
-map <leader>sp [s
 " Add word to spellfile
 map <leader>sa zg
 " Suggest spelling
@@ -340,12 +287,11 @@ map <C-l> <C-w>l
 
 " Vimrc shortcuts
 nmap <silent> <Leader>ev :tabe $MYVIMRC<CR>
-nmap <silent> <Leader>sv :so $MYVIMRC<CR>
-nmap <silent> <Leader>bi :BundleInstall<CR>
 
 " Newline
 map <Leader>o o<Esc>
 map <Leader>O O<Esc>
+
 
 " Copy, paste and cut to system clipboard
 map <Leader>y "+y
@@ -354,8 +300,3 @@ map <Leader>p :set paste<CR>"+p:set nopaste<CR>
 map <Leader>P :set paste<CR>"+P:set nopaste<CR>
 " Copy to end of line
 noremap Y y$
-
-" Run line in shell
-map <Leader>r :exec '!'.getline('.')<CR>
-" Run line in shell and insert output below
-" TODO
