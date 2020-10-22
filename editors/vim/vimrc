@@ -17,27 +17,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'Shougo/dein.vim'
   Plug 'wsdjeg/dein-ui.vim'
 
-  " File navigation and manipulation
-  Plug 'scrooloose/nerdtree'
-  " Nerdtree file browser
-  let NERDTreeDirArrows=0
-  let NERDTreeShowHidden=1
-  nmap <F2> :NERDTreeToggle<CR>
-  let NERDTreeIgnore=['\.py[co]$', '\~$']
-  " Git integration
-  Plug 'Xuyuanp/nerdtree-git-plugin'
-  let g:NERDTreeGitStatusIndicatorMapCustom = {
-    \ "Modified"  : "●",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "-",
-    \ "Renamed"   : "r",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
-
   " More precise, faster matcher than CtrlP
   Plug 'junegunn/fzf', {'do': './install --all', 'merged': 0}
   Plug 'junegunn/fzf.vim'
@@ -129,6 +108,7 @@ call plug#begin('~/.vim/plugged')
   nmap <leader>rn <Plug>(coc-rename)
 
   " Formatting selected code
+  nmap <leader>ff <Plug>(coc-format)
   xmap <leader>f <Plug>(coc-format-selected)
   nmap <leader>f <Plug>(coc-format-selected)
 
@@ -189,6 +169,10 @@ call plug#begin('~/.vim/plugged')
   nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
   " Resume latest coc list.
   nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+  " Coc Explorer
+  nmap <F2> :CocCommand explorer<CR>
+  autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
 
   " Language support
   Plug 'sheerun/vim-polyglot'
