@@ -26,9 +26,6 @@ conky.config = {
   -- Shortens units to a single character (kiB->k, GiB->G, etc.). Default is off.
   short_units = true,
 
-  -- Prevent crashing
-  text_buffer_size = 1024,
-
   -- How strict should if_up be when testing an interface for being up?
   -- The value is one of up, link or address, to check for the interface
   -- being solely up, being up and having link or being up, having link
