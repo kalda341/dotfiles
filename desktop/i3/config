@@ -1,33 +1,73 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
+output DP-1 pos 0 0
+output DVI-I-1 pos 3840 0
+output * bg ~/Pictures/Backgrounds/zyyR5RZ.jpg fill
 
 set $mod Mod4
 
+# smart_gaps on
 gaps inner 12
 gaps outer 8
+
+# Window borders
+default_border pixel 1
+default_floating_border normal
+hide_edge_borders smart
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:Iosevka Regular 13px
 
+# Colors
+# class                 border  backgr. text    indicator
+client.focused          #3498DB #3498DB #ECF0F1 #2ECC71
+client.unfocused        #3498DB #2C3E50 #ECF0F1 #2C3E50
+client.focused_inactive #3498DB #2C3E50 #ECF0F1 #2C3E50
+client.urgent           #3498DB #2C3E50 #ECF0F1 #2C3E50
+
+focus_follows_mouse no
+
+for_window [class="Skype"] floating enable
+for_window [title="Copying"] floating enable
+for_window [title="Deleting"] floating enable
+for_window [title="Moving"] floating enable
+
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
+bar {
+    status_command bash $HOME/.i3/statusline
+    position top
+    height 28
+    font pango:Iosevka Regular 16
+    colors {
+        statusline  #ECF0F1
+        background  #2C3E50
+
+        focused_workspace  #3498DB #2C3E50 #f5f5f5
+        active_workspace   #1ABC9C #2C3E50 #BDC3C7
+        inactive_workspace #2C3E50 #2C3E50 #BDC3C7
+        urgent_workspace   #f92672 #2C3E50 #BDC3C7
+    }
+}
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-bindsym $mod+Escape exec xkill
-
 # Set terminal
-set $term urxvt -e /bin/zsh
+set $term kitty -e /bin/zsh
 
 # Start a terminal
 bindsym $mod+Return exec $term
 
 # Start browser
-bindsym $mod+b exec google-chrome-stable
-bindsym $mod+Shift+b exec google-chrome-stable --incognito
+# bindsym $mod+b exec env MOZ_ENABLE_WAYLAND=1 firefox
+# bindsym $mod+Shift+b exec env MOZ_ENABLE_WAYLAND=1 firefox --private-window
+bindsym $mod+b exec firefox
+bindsym $mod+Shift+b exec firefox --private-window
 
 # Start file manager
-bindsym $mod+p exec urxvt -e "ranger"
+bindsym $mod+p exec nautilus
 
 # Utilities
 bindsym $mod+a exec pavucontrol
@@ -38,12 +78,12 @@ bindsym $mod+Shift+q kill
 
 # Start launcher
 bindsym $mod+d exec rofi -show drun
-# Root launcher
-bindsym $mod+Shift+d exec rofi -show drun -run-command 'gksudo {cmd}'
+bindsym $mod+c exec rofi -show run
+
 # Jump to window
 bindsym $mod+x exec rofi -show window
 # Open ssh picker
-bindsym $mod+Shift+s exec rofi -terminal urxvt -show ssh -ssh-client sshrc
+bindsym $mod+Shift+s exec rofi -terminal kitty -show ssh -ssh-client sshrc
 
 # Change focus
 bindsym $mod+h focus left
@@ -107,10 +147,11 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+# Restart inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r reload
+
 # Exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'swaymsg exit'"
 
 # Resize window (you can also use the mouse for that)
 mode "resize" {
@@ -129,49 +170,6 @@ bindsym $mod+r mode "resize"
 
 bindsym $mod+Tab workspace back_and_forth
 
-# Colors
-# # class                 border  backgr. text    indicator
-client.focused          #3498DB #3498DB #ECF0F1 #2ECC71
-client.unfocused        #3498DB #2C3E50 #ECF0F1 #2C3E50
-client.focused_inactive #3498DB #2C3E50 #ECF0F1 #2C3E50
-client.urgent           #3498DB #2C3E50 #ECF0F1 #2C3E50
-
-new_window pixel 5
-new_float none
-
-focus_follows_mouse no
-
-for_window [class="Skype"] floating enable
-for_window [title="Copying"] floating enable
-for_window [title="Deleting"] floating enable
-for_window [title="Moving"] floating enable
-
-# Desktop bacrground
-exec --no-startup-id nitrogen --restore
-
-# Xflux
-exec --no-startup-id xflux -l -36.8484597 -g 174.76333150000005 -r
-
-# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
-bar {
-    status_command bash $HOME/.i3/statusline
-    position top
-    height 18
-    font pango:Iosevka Regular 10
-    colors {
-        statusline  #ECF0F1
-        background  #2C3E50
-
-        focused_workspace  #3498DB #2C3E50 #f5f5f5
-        active_workspace   #1ABC9C #2C3E50 #BDC3C7
-        inactive_workspace #2C3E50 #2C3E50 #BDC3C7
-        urgent_workspace   #f92672 #2C3E50 #BDC3C7
-    }
-}
-
-# Notifications
-exec --no-startup-id dunst -config ~/.i3/dunstrc
-
 bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' | ~/.i3/scripts/rename_workspace.py
 
 bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jump to workspace: " | ~/.i3/scripts/go_to_workspace.py
@@ -188,35 +186,9 @@ bindsym $mod+Shift+Down move workspace to output down
 bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " | ~/.i3/scripts/jump_to_mark.sh'
 bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " | ~/.i3/scripts/mark_window.sh'
 
-# Sonos / Audio
-bindsym F5 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py play
-bindsym F6 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py pause
-bindsym F7 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py previous
-bindsym F8 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py next
-
-# Lock
-bindsym F9 exec i3lock
-
-bindsym Pause exec systemctl suspend
-
-# Sonos / Audio
-bindsym F10 exec ponymix toggle
-bindsym F11 exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
-bindsym F12 exec ponymix increase 5 && ~/.i3/scripts/notify-volume.sh
-
-bindsym Shift+F10 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py volume 0
-bindsym Shift+F11 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py volume -5
-bindsym Shift+F12 exec ~/dotfiles/desktop/i3/scripts/sonos/sonos.py volume +5
-
-# Thinkpad keys
-# Pulse audio volume control
-bindsym XF86AudioLowerVolume exec ponymix decrease 5 && ~/.i3/scripts/notify-volume.sh
-bindsym XF86AudioRaiseVolume exec ponymix increase 5 && ~/.i3/scripts/notify-volume.sh
-bindsym XF86AudioMute exec ponymix toggle & ~/.i3/scripts/notify-volume.sh
-
-# Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
+# Lock / Suspend
+bindsym Shift+Scroll_Lock exec i3lock
+bindsym Shift+Pause exec systemctl suspend
 
 # Screenshots
 # Full screen
@@ -224,8 +196,8 @@ bindsym Print exec scrot ~/screenshot.png
 # Current window
 bindsym Shift+Print exec scrot -u ~/screenshot.png
 
-# Compositing manager
-exec --no-startup-id compton
+# Notifications
+exec dunst -config ~/.i3/dunstrc
 
 # Disk manager
-exec --no-startup-id udiskie --tray
+exec udiskie --tray
