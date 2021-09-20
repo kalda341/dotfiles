@@ -1,8 +1,8 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
-output DP-1 pos 0 0
-output DVI-I-1 pos 3840 0
+output DP-1 pos 0 0 transform 270
+output DP-2 pos 3840 0
 output * bg ~/Pictures/Backgrounds/zyyR5RZ.jpg fill
 
 set $mod Mod4
@@ -29,56 +29,37 @@ client.urgent           #3498DB #2C3E50 #ECF0F1 #2C3E50
 
 focus_follows_mouse no
 
-for_window [class="Skype"] floating enable
-for_window [title="Copying"] floating enable
-for_window [title="Deleting"] floating enable
-for_window [title="Moving"] floating enable
-
-# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
-    status_command bash $HOME/.i3/statusline
-    position top
-    height 28
-    font pango:Iosevka Regular 16
-    colors {
-        statusline  #ECF0F1
-        background  #2C3E50
+    swaybar_command waybar
+}
 
-        focused_workspace  #3498DB #2C3E50 #f5f5f5
-        active_workspace   #1ABC9C #2C3E50 #BDC3C7
-        inactive_workspace #2C3E50 #2C3E50 #BDC3C7
-        urgent_workspace   #f92672 #2C3E50 #BDC3C7
-    }
+input "2689:517:CHESEN_PS2_to_USB_Converter" {
+    xkb_options altwin:swap_lalt_lwin,caps:escape_shifted_capslock
 }
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # Set terminal
-set $term kitty -e /bin/zsh
+set $term kitty
 
 # Start a terminal
 bindsym $mod+Return exec $term
 
 # Start browser
-# bindsym $mod+b exec env MOZ_ENABLE_WAYLAND=1 firefox
-# bindsym $mod+Shift+b exec env MOZ_ENABLE_WAYLAND=1 firefox --private-window
-bindsym $mod+b exec firefox
-bindsym $mod+Shift+b exec firefox --private-window
+bindsym $mod+b exec env MOZ_ENABLE_WAYLAND=1 firefox
+bindsym $mod+Shift+b exec env MOZ_ENABLE_WAYLAND=1 firefox --private-window
 
 # Start file manager
-bindsym $mod+p exec nautilus
-
-# Utilities
-bindsym $mod+a exec pavucontrol
-bindsym $mod+Shift+a exec arandr
+bindsym $mod+p exec pcmanfm
 
 # Kill focused window
 bindsym $mod+Shift+q kill
 
 # Start launcher
-bindsym $mod+d exec rofi -show drun
-bindsym $mod+c exec rofi -show run
+for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
+set $menu exec $term --class=launcher -e sway-launcher-desktop
+bindsym $mod+d exec $menu
 
 # Jump to window
 bindsym $mod+x exec rofi -show window
@@ -186,18 +167,17 @@ bindsym $mod+Shift+Down move workspace to output down
 bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " | ~/.i3/scripts/jump_to_mark.sh'
 bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " | ~/.i3/scripts/mark_window.sh'
 
-# Lock / Suspend
-bindsym Shift+Scroll_Lock exec i3lock
+# Lock / Suspend / Shutodown / Reboot
 bindsym Shift+Pause exec systemctl suspend
 
 # Screenshots
 # Full screen
-bindsym Print exec scrot ~/screenshot.png
+bindsym Print exec shotman area
 # Current window
 bindsym Shift+Print exec scrot -u ~/screenshot.png
 
 # Notifications
-exec dunst -config ~/.i3/dunstrc
+exec mako
 
 # Disk manager
 exec udiskie --tray
