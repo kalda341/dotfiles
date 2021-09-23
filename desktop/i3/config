@@ -12,7 +12,7 @@ gaps inner 12
 gaps outer 8
 
 # Window borders
-default_border pixel 1
+default_border pixel 4
 default_floating_border normal
 hide_edge_borders smart
 
@@ -60,11 +60,6 @@ bindsym $mod+Shift+q kill
 for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
 set $menu exec $term --class=launcher -e sway-launcher-desktop
 bindsym $mod+d exec $menu
-
-# Jump to window
-bindsym $mod+x exec rofi -show window
-# Open ssh picker
-bindsym $mod+Shift+s exec rofi -terminal kitty -show ssh -ssh-client sshrc
 
 # Change focus
 bindsym $mod+h focus left
@@ -151,21 +146,11 @@ bindsym $mod+r mode "resize"
 
 bindsym $mod+Tab workspace back_and_forth
 
-bindsym $mod+i exec echo -n "" | rofi -dmenu -p 'Rename workspace: ' | ~/.i3/scripts/rename_workspace.py
-
-bindsym $mod+t exec ~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Jump to workspace: " | ~/.i3/scripts/go_to_workspace.py
-bindsym $mod+Shift+t exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window to workspace: " | (~/.i3/scripts/move_to_workspace.py)'
-bindsym $mod+y exec bash -c '~/.i3/scripts/get_workspace_options.py | rofi -dmenu -p "Move window and jump to workspace: " | tee  >(~/.i3/scripts/go_to_workspace.py) >(~/.i3/scripts/move_to_workspace.py)'
-
 # Move workspace between outputs
 bindsym $mod+Shift+Left move workspace to output left
 bindsym $mod+Shift+Right move workspace to output right
 bindsym $mod+Shift+Up move workspace to output up
 bindsym $mod+Shift+Down move workspace to output down
-
-# Marks
-bindsym $mod+n exec bash -c '~/.i3/scripts/get_marks_options.py | rofi -dmenu -p "Jump to mark: " | ~/.i3/scripts/jump_to_mark.sh'
-bindsym $mod+Shift+n exec bash -c 'echo -n "" | rofi -dmenu -p "Mark window: " | ~/.i3/scripts/mark_window.sh'
 
 # Lock / Suspend / Shutodown / Reboot
 bindsym Shift+Pause exec systemctl suspend
@@ -177,7 +162,8 @@ bindsym Print exec shotman area
 bindsym Shift+Print exec scrot -u ~/screenshot.png
 
 # Notifications
-exec mako
+exec mako -c ~/.config/mako/config
+bindsym $mod+n exec makoctl dismiss -a
 
 # Disk manager
 exec udiskie --tray

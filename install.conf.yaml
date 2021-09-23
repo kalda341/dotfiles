@@ -15,8 +15,9 @@
 
     ~/.i3: desktop/i3/
     ~/.Xresources: desktop/Xresources
-    ~/.config/dunst: desktop/dunst
+    ~/.config/mako: desktop/mako
     ~/.config/rofi: desktop/rofi
+    ~/.config/waybar: desktop/waybar
 
     ~/.gitconfig: version_control/gitconfig
 
