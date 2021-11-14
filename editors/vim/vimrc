@@ -14,17 +14,12 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-  Plug 'Shougo/dein.vim'
-  Plug 'wsdjeg/dein-ui.vim'
-
   " More precise, faster matcher than CtrlP
   Plug 'junegunn/fzf', {'do': './install --all', 'merged': 0}
   Plug 'junegunn/fzf.vim'
-  Plug 'pbogut/fzf-mru.vim'
   nmap <C-p> :Files<Cr>
   nmap <C-b> :Buffers<Cr>
-  nmap <C-c> :Commits<Cr>
-  nmap <C-n> :FZFMru<Cr>
+  nmap <C-n> :History<Cr>
   " Respect .gitignore
   let $FZF_DEFAULT_COMMAND = 'ag -g ""'
   let g:fzf_action = {
@@ -32,15 +27,6 @@ call plug#begin('~/.vim/plugged')
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit'
   \ }
-
-  " Find (and replace)
-  " Ag.vim deprecated. Moving to ack
-  Plug 'mileszs/ack.vim'
-  if executable('ag')
-    let g:ackprg = 'ag --vimgrep --smart-case'
-  endif
-  cnoreabbrev Ag Ack!
-  cnoreabbrev Ack Ack!
 
   Plug 'tpope/vim-abolish', {'on': ['Abolish', 'Subvert']}
 
@@ -74,8 +60,17 @@ call plug#begin('~/.vim/plugged')
   " LSP support
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-  " Highlight the symbol and its references when holding the cursor.
-  autocmd CursorHold * silent call CocActionAsync('highlight')
+  " Show function signature, etc
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+      call CocActionAsync('doHover')
+    else
+      execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
+  endfunction
 
   " Use <c-space> to trigger completion.
   if has('nvim')
@@ -97,7 +92,7 @@ call plug#begin('~/.vim/plugged')
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
   nmap <silent> ]g <Plug>(coc-diagnostic-next)
-  
+
   " GoTo code navigation.
   nmap <silent> gd <Plug>(coc-definition)
   nmap <silent> gy <Plug>(coc-type-definition)
@@ -105,38 +100,17 @@ call plug#begin('~/.vim/plugged')
   nmap <silent> gr <Plug>(coc-references)
 
   " Symbol renaming.
-  nmap <leader>rn <Plug>(coc-rename)
+  nmap <leader>rr <Plug>(coc-rename)
+  " File renaming.
+  nmap <leader>rf :CocCommand workspace.renameCurrentFile<CR>
 
   " Formatting selected code
   nmap <leader>ff <Plug>(coc-format)
   xmap <leader>f <Plug>(coc-format-selected)
   nmap <leader>f <Plug>(coc-format-selected)
 
-  " Applying codeAction to the selected region.
-  " Example: `<leader>aap` for current paragraph
-  xmap <leader>a <Plug>(coc-codeaction-selected)
-  nmap <leader>a <Plug>(coc-codeaction-selected)
-
-  " Remap keys for applying codeAction to the current buffer.
-  nmap <leader>ac <Plug>(coc-codeaction)
-  " Apply AutoFix to problem on the current line.
-  nmap <leader>qf <Plug>(coc-fix-current)
-
-  " " Map function and class text objects
-  " " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-  " xmap if <Plug>(coc-funcobj-i)
-  " omap if <Plug>(coc-funcobj-i)
-  " xmap af <Plug>(coc-funcobj-a)
-  " omap af <Plug>(coc-funcobj-a)
-  " xmap ic <Plug>(coc-classobj-i)
-  " omap ic <Plug>(coc-classobj-i)
-  " xmap ac <Plug>(coc-classobj-a)
-  " omap ac <Plug>(coc-classobj-a)
-
-  " " Use CTRL-S for selections ranges.
-  " " Requires 'textDocument/selectionRange' support of language server.
-  " nmap <silent> <C-s> <Plug>(coc-range-select)
-  " xmap <silent> <C-s> <Plug>(coc-range-select)
+  " Typescript specific build
+  command! -nargs=0 Tsc :call CocAction('runCommand', 'tsserver.watchBuild')
 
   " Add `:Format` command to format current buffer.
   command! -nargs=0 Format :call CocAction('format')
@@ -152,24 +126,6 @@ call plug#begin('~/.vim/plugged')
   " provide custom statusline: lightline.vim, vim-airline.
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-  " Mappings for CoCList
-  " Show all diagnostics.
-  nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-  " Manage extensions.
-  nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-  " Show commands.
-  nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-  " Find symbol of current document.
-  nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-  " Search workspace symbols.
-  nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-  " Do default action for next item.
-  nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-  " Do default action for previous item.
-  nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-  " Resume latest coc list.
-  nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
   " Coc Explorer
   nmap <F2> :CocCommand explorer<CR>
   autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
@@ -177,9 +133,9 @@ call plug#begin('~/.vim/plugged')
   " Language support
   Plug 'sheerun/vim-polyglot'
 
-  Plug 'Raimondi/delimitMate'
-  let delimitMate_expand_cr = 1
-  let delimitMate_expand_space = 1
+  " Plug 'Raimondi/delimitMate'
+  " let delimitMate_expand_cr = 1
+  " let delimitMate_expand_space = 1
 
   " Actions
   Plug 'scrooloose/nerdcommenter'
@@ -309,7 +265,7 @@ set cursorline
 " Search
 set hlsearch                    " Highlight searches
 set incsearch                   " Highlight dynamically as pattern is typed
-set ignorecase                  " Ignore case of searches
+set smartcase                   " Ignore case of searches unless they contain an uppercase character
 " Leader / to clear search highligting
 nmap <Leader>/ :nohlsearch<CR>
 
@@ -352,18 +308,31 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" The moving commands don't align perfectly (and we can't use shift)
+" but make them behave similar to i3/sway
+map <Leader><C-h> <C-w>R
+map <Leader><C-j> <C-w>R
+map <Leader><C-k> <C-w>r
+map <Leader><C-l> <C-w>r
+
 " Vimrc shortcuts
-nmap <silent> <Leader>ev :tabe $MYVIMRC<CR>
+nmap <silent> <Leader>ev :ed $MYVIMRC<CR>
 
 " Newline
 map <Leader>o o<Esc>
 map <Leader>O O<Esc>
 
-
 " Copy, paste and cut to system clipboard
 map <Leader>y "+y
-map <Leader>x "+d
+map <Leader>d "+d
 map <Leader>p :set paste<CR>"+p:set nopaste<CR>
 map <Leader>P :set paste<CR>"+P:set nopaste<CR>
-" Copy to end of line
-noremap Y y$
+
+function! ToggleQuickFix()
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        copen
+    else
+        cclose
+    endif
+endfunction
+map <Leader>q :call ToggleQuickFix()<CR>
