@@ -1,37 +1,12 @@
-- shell:
-    - mkdir -p ~/.sshrc.d
-    - mkdir -p ~/src
-    - mkdir -p ~/Downloads
-    - mkdir -p ~/bin
-    - mkdir -p ~/.config/nvim
+- defaults:
+    link:
+      relink: true
 
 - link:
-    ~/.config/nvim/init.vim: editors/vim/vimrc
-
-    ~/.tmux.conf: shells/tmux/tmux.conf
-    ~/.zshrc: shells/zsh/zshrc
-    ~/.bashrc: shells/bash/bashrc
-    ~/.config/fish/config.fish: shells/fish/config.fish
-
-    ~/.i3: desktop/i3/
-    ~/.Xresources: desktop/Xresources
-    ~/.config/mako: desktop/mako
-    ~/.config/rofi: desktop/rofi
+    ~/.config/nvim: nvim
+    ~/.tmux.conf: tmux/tmux.conf
+    ~/.zshrc: zsh/zshrc
+    ~/.config/sway: sway
     ~/.config/waybar: desktop/waybar
-
-    ~/.gitconfig: version_control/gitconfig
-
-    ~/.vimperatorrc: browsers/vimperatorrc
-    ~/.config/ranger: browsers/ranger
-    ~/.config/luakit: browsers/luakit
-    ~/.vimperatorrc: browsers/vimperatorrc
-
-    ~/.ncmpcpp: music/ncmpcpp
-    ~/.config/beets: music/beets
-
-    ~/.sshrc: ssh/sshrc
-    ~/.sshrc.d/.vimrc: editors/vim/vimrc
-    ~/.sshrc.d/.tmux.conf: shells/tmux/tmux.conf
-    ~/.sshrc.d/rxvt-unicode-256color: /usr/share/terminfo/r/rxvt-unicode-256color
-
-    ~/.config/kitty/kitty.conf: terminals/kitty.conf
+    ~/.gitconfig: git/gitconfig
+    ~/.config/kitty: kitty
