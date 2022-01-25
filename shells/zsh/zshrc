@@ -31,7 +31,7 @@ if ! zgen saved; then
 fi
 
 export EDITOR="nvim"
-export BROWSER="luakit"
+export BROWSER="firefox"
 export SHELL="zsh"
 
 mkdircd = function(){
