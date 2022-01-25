@@ -10,3 +10,4 @@
     ~/.config/waybar: waybar
     ~/.gitconfig: git/gitconfig
     ~/.config/kitty: kitty
+    ~/.config/foot: foot
