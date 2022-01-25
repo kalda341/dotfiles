@@ -7,6 +7,6 @@
     ~/.tmux.conf: tmux/tmux.conf
     ~/.zshrc: zsh/zshrc
     ~/.config/sway: sway
-    ~/.config/waybar: desktop/waybar
+    ~/.config/waybar: waybar
     ~/.gitconfig: git/gitconfig
     ~/.config/kitty: kitty
