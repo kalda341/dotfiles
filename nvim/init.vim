@@ -15,13 +15,13 @@ endif
 
 call plug#begin('~/.vim/plugged')
   " More precise, faster matcher than CtrlP
+  " Respect .gitignore
+  let $FZF_DEFAULT_COMMAND = 'rg --files'
   Plug 'junegunn/fzf', {'do': './install --all', 'merged': 0}
   Plug 'junegunn/fzf.vim'
   nmap <C-p> :Files<Cr>
   nmap <C-b> :Buffers<Cr>
   nmap <C-n> :History<Cr>
-  " Respect .gitignore
-  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
   let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
