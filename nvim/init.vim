@@ -160,8 +160,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'editorconfig/editorconfig-vim'
 
   " Traverse the undo/redo tree
-  Plug 'sjl/gundo.vim'
-  nnoremap <F3> :GundoToggle<CR>
+  Plug 'mbbill/undotree'
+  nnoremap <F3> :UndotreeToggle<CR>
 call plug#end()
 
 " Improve startup time
