@@ -14,25 +14,23 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-  " More precise, faster matcher than CtrlP
-  " Respect .gitignore
-  let $FZF_DEFAULT_COMMAND = 'rg --files'
-  Plug 'junegunn/fzf', {'do': './install --all', 'merged': 0}
-  Plug 'junegunn/fzf.vim'
-  nmap <C-p> :Files<Cr>
-  nmap <C-b> :Buffers<Cr>
-  nmap <C-n> :History<Cr>
-  let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit'
-  \ }
+  " File search/browse
+  Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'nvim-tree/nvim-tree.lua'
+  nnoremap <F2> :NvimTreeToggle<CR>
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'smartpde/telescope-recent-files'
+
+  nnoremap <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+  nnoremap <C-b> <cmd>lua require('telescope.builtin').buffers()<cr>
+  nnoremap <C-n> <cmd>lua require('telescope').extensions.recent_files.pick()<cr>
 
   Plug 'tpope/vim-abolish', {'on': ['Abolish', 'Subvert']}
 
   " Git
   Plug 'mattn/webapi-vim'
   Plug 'mattn/gist-vim', {'on': 'Gist'}
+  Plug 'mhinz/vim-signify'
   Plug 'tpope/vim-fugitive'
   " Diffs should be vertically split!
   set diffopt+=vertical
@@ -43,88 +41,15 @@ call plug#begin('~/.vim/plugged')
   set t_Co=256
   autocmd vimenter * colorscheme gruvbox
 
-  " Syntax checking/linting
-  " Coc can do this, but ale does it better
-  let g:ale_disable_lsp = 1
-  Plug 'w0rp/ale'
-  " let b:ale_linters = [
-  " \ 'prospector',
-  " \ 'eslint', 'typescript',
-  " \ 'ember-template-lint',
-  " \ 'stylelint'
-  " \ ]
-  let g:ale_sign_column_always = 1
-  let g:ale_sign_error = '✘'
-  let g:ale_sign_warning = '!'
-
   " LSP support
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'jose-elias-alvarez/null-ls.nvim'
 
-  " Show function signature, etc
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
-    elseif (coc#rpc#ready())
-      call CocActionAsync('doHover')
-    else
-      execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-  endfunction
-
-  " Use <c-space> to trigger completion.
-  if has('nvim')
-    inoremap <silent><expr> <c-space> coc#refresh()
-  else
-    inoremap <silent><expr> <c-@> coc#refresh()
-  endif
-
-  " Make <CR> auto-select the first completion item and notify coc.nvim to
-  " format on enter, <cr> could be remapped by other vim plugin
-  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-  " Use `[g` and `]g` to navigate diagnostics
-  " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-  nmap <silent> [g <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-  " GoTo code navigation.
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
-  " Symbol renaming.
-  nmap <leader>rr <Plug>(coc-rename)
-  " File renaming.
-  nmap <leader>rf :CocCommand workspace.renameCurrentFile<CR>
-
-  " Formatting selected code
-  nmap <leader>ff <Plug>(coc-format)
-  xmap <leader>f <Plug>(coc-format-selected)
-  nmap <leader>f <Plug>(coc-format-selected)
-
-  " Typescript specific build
-  command! -nargs=0 Tsc :call CocAction('runCommand', 'tsserver.watchBuild')
-
-  " Add `:Format` command to format current buffer.
-  command! -nargs=0 Format :call CocAction('format')
-
-  " Add `:Fold` command to fold current buffer.
-  command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-  " Add `:OR` command for organize imports of the current buffer.
-  command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-  " Add (Neo)Vim's native statusline support.
-  " NOTE: Please see `:h coc-status` for integrations with external plugins that
-  " provide custom statusline: lightline.vim, vim-airline.
-  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-  " Coc Explorer
-  nmap <F2> :CocCommand explorer<CR>
-  autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
+  " Tree sitter
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
   " Language support
   Plug 'sheerun/vim-polyglot'
@@ -163,6 +88,130 @@ call plug#begin('~/.vim/plugged')
   Plug 'mbbill/undotree'
   nnoremap <F3> :UndotreeToggle<CR>
 call plug#end()
+
+lua <<EOF
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  vim.diagnostic.config({
+    -- Virtual text writes on the line, and is on by default. I prefer
+    -- vim.diagnostic.open_float
+    virtual_text = false,
+    signs = true,
+  })
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>do', vim.diagnostic.open_float, bufopts)
+  vim.keymap.set('n', '<space>dp', vim.diagnostic.goto_prev, bufopts)
+  vim.keymap.set('n', '<space>dn', vim.diagnostic.goto_next, bufopts)
+end
+
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+local lspconfig = require('lspconfig')
+local servers = { 'tsserver' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
+
+-- null-ls setup
+local null_ls = require("null-ls")
+null_ls.setup({
+    sources = {
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.formatting.prettierd,
+    },
+})
+
+require("telescope").load_extension("recent_files")
+
+-- Treesitter
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = "all",
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+
+-- Disable netrw in favour of nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+require("nvim-tree").setup({
+  update_focused_file = {
+    enable = true
+  }
+})
+
+EOF
+
+  " " Coc Explorer
+  " nmap <F2> :CocCommand explorer<CR>
+  " autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
 
 " Improve startup time
 set guioptions=M
@@ -323,6 +372,10 @@ map <Leader>y "+y
 map <Leader>d "+d
 map <Leader>p :set paste<CR>"+p:set nopaste<CR>
 map <Leader>P :set paste<CR>"+P:set nopaste<CR>
+
+" Vimgrep
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+set grepformat+=%f:%l:%c:%m
 
 function! ToggleQuickFix()
     if empty(filter(getwininfo(), 'v:val.quickfix'))
