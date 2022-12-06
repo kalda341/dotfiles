@@ -338,10 +338,7 @@ inoremap kk <ESC>
 inoremap jj <ESC>
 
 " Spelling
-" Pressing ,ss will toggle and untoggle spell checking
-setlocal spell spelllang=en_gb
-setlocal nospell
-map <leader>ss :setlocal spell!<cr>
+set spell spelllang=en_nz
 " Add word to spellfile
 map <leader>sa zg
 " Suggest spelling
