@@ -36,17 +36,18 @@ call plug#begin('~/.vim/plugged')
   set diffopt+=vertical
 
   " Theme
-  Plug 'morhetz/gruvbox'
-  set background=dark
-  set t_Co=256
-  autocmd vimenter * colorscheme gruvbox
+  Plug 'sainnhe/gruvbox-material'
 
   " LSP support
   Plug 'nvim-lua/plenary.nvim'
+  Plug 'williamboman/nvim-lsp-installer'
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'mfussenegger/nvim-jdtls'
   Plug 'jose-elias-alvarez/null-ls.nvim'
+  Plug 'saadparwaiz1/cmp_luasnip'
+  Plug 'L3MON4D3/LuaSnip', {'tag': 'v<CurrentMajor>.*', 'do': 'make install_jsregexp'}
 
   " Tree sitter
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -86,8 +87,24 @@ call plug#begin('~/.vim/plugged')
 
   " Traverse the undo/redo tree
   Plug 'mbbill/undotree'
+
+  " Copilot
+  Plug 'github/copilot.vim'
+
   nnoremap <F3> :UndotreeToggle<CR>
 call plug#end()
+
+if has('termguicolors')
+  set termguicolors
+endif
+set background=dark
+
+let g:gruvbox_material_background = 'medium'
+let g:gruvbox_material_foreground = 'original'
+let g:gruvbox_material_better_performance = 1
+
+colorscheme gruvbox-material
+let g:lightline = {'colorscheme' : 'gruvbox_material'}
 
 lua <<EOF
 
@@ -130,14 +147,19 @@ end
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+require("nvim-lsp-installer").setup {}
 local lspconfig = require('lspconfig')
-local servers = { 'tsserver' }
+local servers = { 'ts_ls', 'tailwindcss', 'pyright' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
+
+-- luasnip setup
+local luasnip = require 'luasnip'
+require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./snippets" } })
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
@@ -155,6 +177,24 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   }),
   sources = {
     { name = 'nvim_lsp' },
@@ -209,9 +249,15 @@ require("nvim-tree").setup({
 
 EOF
 
-  " " Coc Explorer
-  " nmap <F2> :CocCommand explorer<CR>
-  " autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
+" Show LSP diagnostics in line colour, not in the gutter
+sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticSignError
+sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticSignWarn
+sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticSignInfo
+sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticSignHint
+
+" Copilot
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
 
 " Improve startup time
 set guioptions=M
@@ -241,13 +287,7 @@ set updatetime=300
 set shortmess+=c
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-" Suggested by coc
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 " Use ; as :
 nnoremap ; :
 " Removes error message when navigating away from unsaved buffer
@@ -303,7 +343,6 @@ set list
 
 " Line numbers and limits
 set number                      " Show line numbers
-set relativenumber
 set cc=120                       " Ver line in 120 column
 set cursorline
 
@@ -339,10 +378,6 @@ inoremap jj <ESC>
 
 " Spelling
 set spell spelllang=en_nz
-" Add word to spellfile
-map <leader>sa zg
-" Suggest spelling
-map <leader>s? z=
 
 " Make it easier to navigate windows
 map <C-h> <C-w>h
