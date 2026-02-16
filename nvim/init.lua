@@ -48,9 +48,6 @@ vim.call('plug#begin', '~/.vim/plugged')
   -- Tree sitter
   Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 
-  -- Language support
-  Plug('sheerun/vim-polyglot')
-
   -- Actions
   Plug('scrooloose/nerdcommenter')
   Plug('FooSoft/vim-argwrap')
@@ -79,15 +76,12 @@ vim.call('plug#end')
 vim.g.NERDSpaceDelims = 1
 
 -- Theme setup
-if vim.fn.has('termguicolors') == 1 then
-  vim.opt.termguicolors = true
-end
+vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 vim.g.gruvbox_material_background = 'medium'
 vim.g.gruvbox_material_foreground = 'original'
 vim.g.gruvbox_material_better_performance = 1
 vim.cmd('colorscheme gruvbox-material')
-vim.g.lightline = {colorscheme = 'gruvbox_material'}
 
 -- Diffs should be vertically split
 vim.opt.diffopt:append('vertical')
@@ -225,15 +219,9 @@ vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', { expr = true, silent =
 -- ============================================================================
 -- General Settings
 -- ============================================================================
-vim.cmd('syntax on')
-vim.cmd('filetype on')
-vim.cmd('filetype plugin on')
-vim.cmd('filetype indent on')
 
--- Backup and shell settings
+-- Backup settings
 vim.opt.backupcopy = 'yes'
-vim.opt.shell = '/bin/bash'
-vim.opt.backspace = {'indent', 'eol', 'start'}
 
 -- Command history
 vim.opt.history = 200
@@ -250,8 +238,6 @@ vim.opt.hidden = true
 vim.opt.autoread = true
 
 -- Terminal setup
-vim.opt.fileencodings = {'utf8', 'cp1251'}
-vim.opt.encoding = 'utf8'
 vim.opt.errorbells = false
 vim.opt.visualbell = true
 
@@ -262,7 +248,6 @@ vim.api.nvim_create_autocmd('VimResized', {
 })
 
 -- Indentation
-vim.opt.autoindent = true
 vim.opt.shiftround = true
 
 -- Statusline
@@ -291,7 +276,11 @@ vim.opt.smartcase = true
 
 -- Undo settings
 vim.opt.undofile = true
-vim.opt.undodir = '/tmp'
+local undodir = vim.fn.stdpath('data') .. '/undo'
+if vim.fn.isdirectory(undodir) == 0 then
+  vim.fn.mkdir(undodir, 'p')
+end
+vim.opt.undodir = undodir
 
 -- Disable swap and backup
 vim.opt.swapfile = false
@@ -329,8 +318,8 @@ vim.keymap.set('c', 'w!!', 'w !sudo tee % >/dev/null')
 vim.keymap.set('n', '<Leader>/', ':nohlsearch<CR>')
 
 -- Scroll wrapped lines normally
-vim.keymap.set('n', 'k', 'gk', { buffer = true, silent = true })
-vim.keymap.set('n', 'j', 'gj', { buffer = true, silent = true })
+vim.keymap.set('n', 'k', 'gk', { silent = true })
+vim.keymap.set('n', 'j', 'gj', { silent = true })
 
 -- End/Start of line in insert mode
 vim.keymap.set('i', '<C-e>', '<C-o>$')
