@@ -40,12 +40,14 @@ call plug#begin('~/.vim/plugged')
 
   " LSP support
   Plug 'nvim-lua/plenary.nvim'
-  Plug 'williamboman/nvim-lsp-installer'
+  Plug 'mason-org/mason.nvim'
+  Plug 'mason-org/mason-lspconfig.nvim'
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'mfussenegger/nvim-jdtls'
-  Plug 'jose-elias-alvarez/null-ls.nvim'
+  " Replacement for null-ls, which is no longer maintained. Provides
+  " diagnostics and formatting from external tools.
+  Plug 'nvimtools/none-ls.nvim'
   Plug 'saadparwaiz1/cmp_luasnip'
   Plug 'L3MON4D3/LuaSnip', {'tag': 'v<CurrentMajor>.*', 'do': 'make install_jsregexp'}
 
@@ -54,10 +56,6 @@ call plug#begin('~/.vim/plugged')
 
   " Language support
   Plug 'sheerun/vim-polyglot'
-
-  " Plug 'Raimondi/delimitMate'
-  " let delimitMate_expand_cr = 1
-  " let delimitMate_expand_space = 1
 
   " Actions
   Plug 'scrooloose/nerdcommenter'
@@ -108,54 +106,45 @@ let g:lightline = {'colorscheme' : 'gruvbox_material'}
 
 lua <<EOF
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  vim.diagnostic.config({
-    -- Virtual text writes on the line, and is on by default. I prefer
-    -- vim.diagnostic.open_float
-    virtual_text = false,
-    signs = true,
-  })
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-  vim.keymap.set('n', '<space>do', vim.diagnostic.open_float, bufopts)
-  vim.keymap.set('n', '<space>dp', vim.diagnostic.goto_prev, bufopts)
-  vim.keymap.set('n', '<space>dn', vim.diagnostic.goto_next, bufopts)
-end
+-- Mappings.
+-- See `:help vim.lsp.*` for documentation on any of the below functions
+local bufopts = { noremap=true, silent=true }
+vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+vim.keymap.set('n', '<space>wl', function()
+  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+end, bufopts)
+vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+vim.keymap.set('n', '<space>do', vim.diagnostic.open_float, bufopts)
+vim.keymap.set('n', '<space>dp', function() vim.diagnostic.jump({ count = -1, float = true }) end, bufopts)
+vim.keymap.set('n', '<space>dn', function() vim.diagnostic.jump({ count = 1, float = true }) end, bufopts)
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-require("nvim-lsp-installer").setup {}
-local lspconfig = require('lspconfig')
-local servers = { 'ts_ls', 'tailwindcss', 'pyright' }
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
+require("mason").setup()
+require("mason-lspconfig").setup {
+  ensure_installed = {
+    -- Typescript and JavaScript
+    'ts_ls',
+    'eslint',
+    -- CSS
+    'tailwindcss',
+    -- Terraform
+    'terraformls',
+    -- Python
+    'pyright'
+  },
+}
 
 -- luasnip setup
 local luasnip = require 'luasnip'
@@ -206,7 +195,6 @@ cmp.setup {
 local null_ls = require("null-ls")
 null_ls.setup({
     sources = {
-        null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.formatting.prettierd,
     },
 })
@@ -259,9 +247,6 @@ sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=Dia
 imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
 
-" Improve startup time
-set guioptions=M
-
 " General
 syntax on
 filetype on
@@ -302,7 +287,6 @@ set autoread
 autocmd VimResized * wincmd =
 
 " Terminal setup
-set termencoding=utf-8
 set fileencodings=utf8,cp1251
 set encoding=utf8
 " fixes terminal draw bug in Tmux
