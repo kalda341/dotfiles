@@ -32,6 +32,9 @@ vim.opt.laststatus = 2
 vim.opt.ruler = true
 vim.opt.showcmd = true
 
+-- Hide command line when not in use (Neovim 0.8+)
+vim.opt.cmdheight = 0
+
 -- Wildmenu settings
 vim.opt.wildmenu = true
 vim.opt.wildignorecase = true
