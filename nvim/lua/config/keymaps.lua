@@ -28,11 +28,7 @@ vim.keymap.set('i', '<C-a>', '<C-o>^')
 vim.keymap.set('i', 'kk', '<ESC>')
 vim.keymap.set('i', 'jj', '<ESC>')
 
--- Navigate windows
-vim.keymap.set('', '<C-h>', '<C-w>h', { desc = 'Go to left window' })
-vim.keymap.set('', '<C-j>', '<C-w>j', { desc = 'Go to lower window' })
-vim.keymap.set('', '<C-k>', '<C-w>k', { desc = 'Go to upper window' })
-vim.keymap.set('', '<C-l>', '<C-w>l', { desc = 'Go to right window' })
+-- Navigate windows (handled by vim-tmux-navigator plugin)
 
 -- Window rotation (i3/sway-like)
 vim.keymap.set('', '<Leader><C-h>', '<C-w>R', { desc = 'Rotate windows left' })
