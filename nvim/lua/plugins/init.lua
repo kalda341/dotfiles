@@ -209,12 +209,13 @@ return {
 
   -- Actions
   {
-    'scrooloose/nerdcommenter',
+    'numToStr/Comment.nvim',
     keys = {
-      { '<leader>c<space>', mode = { 'n', 'v' }, desc = 'Toggle comment' },
+      { 'gc', mode = { 'n', 'v' }, desc = 'Comment toggle linewise' },
+      { 'gb', mode = { 'n', 'v' }, desc = 'Comment toggle blockwise' },
     },
-    init = function()
-      vim.g.NERDSpaceDelims = 1
+    config = function()
+      require('Comment').setup()
     end,
   },
   {
