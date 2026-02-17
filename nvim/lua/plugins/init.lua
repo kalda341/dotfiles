@@ -234,13 +234,12 @@ return {
 
   -- Motions
   {
-    'tpope/vim-surround',
-    keys = {
-      { 'ys', mode = 'n' },
-      { 'cs', mode = 'n' },
-      { 'ds', mode = 'n' },
-      { 'S', mode = 'v' },
-    },
+    'kylechui/nvim-surround',
+    version = '*',
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup({})
+    end,
   },
 
   -- Text objects
