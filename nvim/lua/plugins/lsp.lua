@@ -1,5 +1,11 @@
 -- LSP Configuration: Mason + nvim-lspconfig + none-ls
 
+-- LSP Diagnostic Signs
+vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "DiagnosticSignError" })
+vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn", linehl = "", numhl = "DiagnosticSignWarn" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo", linehl = "", numhl = "DiagnosticSignInfo" })
+vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint", linehl = "", numhl = "DiagnosticSignHint" })
+
 -- LSP Keymaps
 local bufopts = { noremap = true, silent = true }
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
