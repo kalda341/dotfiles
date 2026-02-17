@@ -8,13 +8,13 @@ vim.keymap.set('n', 'q:', '<Nop>')
 vim.keymap.set('n', 'Q', '<Nop>')
 
 -- Saving
-vim.keymap.set('n', '<Leader>w', ':w!<CR>')
+vim.keymap.set('n', '<Leader>w', ':w!<CR>', { desc = 'Save file' })
 
 -- Sudo write
-vim.keymap.set('c', 'w!!', 'w !sudo tee % >/dev/null')
+vim.keymap.set('c', 'w!!', 'w !sudo tee % >/dev/null', { desc = 'Save with sudo' })
 
 -- Clear search highlighting
-vim.keymap.set('n', '<Leader>/', ':nohlsearch<CR>')
+vim.keymap.set('n', '<Leader>/', ':nohlsearch<CR>', { desc = 'Clear search highlight' })
 
 -- Scroll wrapped lines normally
 vim.keymap.set('n', 'k', 'gk', { silent = true })
@@ -29,29 +29,29 @@ vim.keymap.set('i', 'kk', '<ESC>')
 vim.keymap.set('i', 'jj', '<ESC>')
 
 -- Navigate windows
-vim.keymap.set('', '<C-h>', '<C-w>h')
-vim.keymap.set('', '<C-j>', '<C-w>j')
-vim.keymap.set('', '<C-k>', '<C-w>k')
-vim.keymap.set('', '<C-l>', '<C-w>l')
+vim.keymap.set('', '<C-h>', '<C-w>h', { desc = 'Go to left window' })
+vim.keymap.set('', '<C-j>', '<C-w>j', { desc = 'Go to lower window' })
+vim.keymap.set('', '<C-k>', '<C-w>k', { desc = 'Go to upper window' })
+vim.keymap.set('', '<C-l>', '<C-w>l', { desc = 'Go to right window' })
 
 -- Window rotation (i3/sway-like)
-vim.keymap.set('', '<Leader><C-h>', '<C-w>R')
-vim.keymap.set('', '<Leader><C-j>', '<C-w>R')
-vim.keymap.set('', '<Leader><C-k>', '<C-w>r')
-vim.keymap.set('', '<Leader><C-l>', '<C-w>r')
+vim.keymap.set('', '<Leader><C-h>', '<C-w>R', { desc = 'Rotate windows left' })
+vim.keymap.set('', '<Leader><C-j>', '<C-w>R', { desc = 'Rotate windows down' })
+vim.keymap.set('', '<Leader><C-k>', '<C-w>r', { desc = 'Rotate windows up' })
+vim.keymap.set('', '<Leader><C-l>', '<C-w>r', { desc = 'Rotate windows right' })
 
 -- Vimrc shortcuts
-vim.keymap.set('n', '<Leader>ev', ':ed $MYVIMRC<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>ev', ':ed $MYVIMRC<CR>', { silent = true, desc = 'Edit init.lua' })
 
 -- Newline without entering insert mode
-vim.keymap.set('', '<Leader>o', 'o<Esc>')
-vim.keymap.set('', '<Leader>O', 'O<Esc>')
+vim.keymap.set('', '<Leader>o', 'o<Esc>', { desc = 'Insert line below' })
+vim.keymap.set('', '<Leader>O', 'O<Esc>', { desc = 'Insert line above' })
 
 -- System clipboard operations
-vim.keymap.set('', '<Leader>y', '"+y')
-vim.keymap.set('', '<Leader>d', '"+d')
-vim.keymap.set('', '<Leader>p', ':set paste<CR>"+p:set nopaste<CR>')
-vim.keymap.set('', '<Leader>P', ':set paste<CR>"+P:set nopaste<CR>')
+vim.keymap.set('', '<Leader>y', '"+y', { desc = 'Yank to clipboard' })
+vim.keymap.set('', '<Leader>d', '"+d', { desc = 'Delete to clipboard' })
+vim.keymap.set('', '<Leader>p', ':set paste<CR>"+p:set nopaste<CR>', { desc = 'Paste from clipboard' })
+vim.keymap.set('', '<Leader>P', ':set paste<CR>"+P:set nopaste<CR>', { desc = 'Paste from clipboard (before)' })
 
 -- QuickFix toggle
 local function toggle_quickfix()
@@ -68,4 +68,4 @@ local function toggle_quickfix()
     vim.cmd('copen')
   end
 end
-vim.keymap.set('', '<Leader>q', toggle_quickfix)
+vim.keymap.set('', '<Leader>q', toggle_quickfix, { desc = 'Toggle quickfix' })

@@ -306,4 +306,29 @@ return {
       })
     end,
   },
+
+  -- Which-key (keybinding hints)
+  {
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    config = function()
+      local wk = require('which-key')
+      wk.setup({
+        preset = 'modern',
+      })
+
+      -- Register key groups for better organization
+      wk.add({
+        { "<leader>e", group = "Edit" },
+        { "<leader>h", group = "Git hunks" },
+        { "<leader>t", group = "Toggle" },
+        { "<space>d", group = "Diagnostics" },
+        { "<space>w", group = "Workspace" },
+        { "<leader><C-h>", hidden = true },
+        { "<leader><C-j>", hidden = true },
+        { "<leader><C-k>", hidden = true },
+        { "<leader><C-l>", hidden = true },
+      })
+    end,
+  },
 }
