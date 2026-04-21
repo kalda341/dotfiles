@@ -109,7 +109,7 @@ return {
   },
   {
     'tpope/vim-fugitive',
-    cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gwrite', 'Gdiff' },
+    lazy = false,
   },
 
   -- Theme
